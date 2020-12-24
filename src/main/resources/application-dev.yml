@@ -1,0 +1,15 @@
+server:
+  port: 8081
+spring:
+  #数据库连接配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql-cn-north-1-f32276cd5f014dfb.rds.jdcloud.com:3358/masterbasic?characterEncoding=utf-8&useSSL=false
+    username: testwl
+    password: YXjaAyO8C4HOMl2rmSHol8GS61
+
+#mybatis的相关配置
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.demo.entity

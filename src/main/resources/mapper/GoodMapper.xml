@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.GoodMapper">
+    <insert id="addBsItembase" parameterType="com.example.demo.entity.BsItembase">
+        insert
+        into
+        masterbasic.bs_itembase (
+        `OWNER_NO`,
+        `GOODS_NO`,
+        `NAME`,
+        `VIRTUAL_FLAG`,
+        `VOLUMNSCALE`,
+        `GRASSWEIGHT`,
+        `NETWEIGHT`,
+        `OPT_STATUS`,
+        `QC`,
+        `PRODUCER`,
+        `SUPPILER`,
+        `BRAND`,
+        `PRODUCINGAREA`,
+        `VALID_FLAG`,
+        `NEW_FLAG`,
+        `BUYER`,
+        `PACKAGETYPE`,
+        `IS3GEXPENSE_FLAG`,
+        `LUXURY_FLAG`,
+        `MOVABLE_FLAG`,
+        `HEALTHCARE_FLAG`,
+        `QCSAMPLE_FLAG`,
+        `GOODS_TYPE_NO`,
+        `SERIAL_MANAGE_FLAG`,
+        `JDBARCODE`,
+        `LOTMANAGE_FLAG`,
+        `MIXBATCHSTORAGE_FLAG`,
+        `GENERAL_TYPE`,
+        `DESCRIPTION` ,
+        `CREATE_TIME` ,
+        `UPDATE_TIME` ,
+        `WAREHOUSE_NO`,
+        `CREATE_USER`,
+        `UPDATE_USER`,
+        `UPC_CODE`,
+        `PROBESNINBOUND`,
+        `UNIQUESNINBOUND`,
+        `RETURNCELL_NO`,
+        `TARE`,
+        `AREA_NO`,
+        `ZONE_NO`,
+        `CELL_NO`,
+        `QCZONE_NO`,
+        `HIGHVALUE`,
+        `FRANGIBLE`,
+        `CHUANWEIABLE`,
+        `SHELFLIFE_FLAG`,
+        `MAXINVENTORY_QTY`,
+        `TEMPCONTROL_FLAG`,
+        `TEMPMAX`,
+        `TEMPMIN`,
+        `HUMMAX`,
+        `HUMMIN`,
+        `TRANSPORTWAY`,
+        `TRANSPORTTYPE`,
+        `DEVIATION`,
+        `CONTAINERABLE`,
+        `PROBESNOUTBOUND`,
+        `UNIQUESNOUTBOUND`,
+        `INVENTORYLEAVEL` ,
+        `PROCESSCC`,
+        `REPLENISHPRIORITY`,
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `LENGTH`,
+        `WIDTH`,
+        `HEIGHT`,
+        `ADULT_USING_FLAG`,
+        `IRREGULAR_SHAPE_FLAG`,
+        `IMPORTED_FLAG`,
+        `BOX_MANAGE`,
+        `EXPENSIVE_FLAG`,
+        `ISBN`,
+        `AUTHOR`,
+        `PRESS`,
+        `BATCH_NO`,
+        `IMAGE_PATH`,
+        `FOREIGN_NAME`,
+        `SPEC`,
+        `sale_unit`,
+        `IS_ALLOTYPE`,
+        `omc_version`,
+        `PMX`,
+        `plate_gauge_bottom`,
+        `plate_gauge_height`,
+        `PPP`)
+        select
+        `OWNER_NO`,
+        #{goodsNo},
+        #{name},
+        `VIRTUAL_FLAG`,
+        `VOLUMNSCALE`,
+        `GRASSWEIGHT`,
+        `NETWEIGHT`,
+        `OPT_STATUS`,
+        `QC`,
+        `PRODUCER`,
+        `SUPPILER`,
+        `BRAND`,
+        `PRODUCINGAREA`,
+        `VALID_FLAG`,
+        `NEW_FLAG`,
+        `BUYER`,
+        `PACKAGETYPE`,
+        `IS3GEXPENSE_FLAG`,
+        `LUXURY_FLAG`,
+        `MOVABLE_FLAG`,
+        `HEALTHCARE_FLAG`,
+        `QCSAMPLE_FLAG`,
+        `GOODS_TYPE_NO`,
+        `SERIAL_MANAGE_FLAG`,
+        #{goodsNo},
+        `LOTMANAGE_FLAG`,
+        `MIXBATCHSTORAGE_FLAG`,
+        `GENERAL_TYPE`,
+        `DESCRIPTION` ,
+        now() ,
+        now() ,
+        `WAREHOUSE_NO`,
+        #{createUser},
+        #{createUser},
+        `UPC_CODE`,
+        `PROBESNINBOUND`,
+        `UNIQUESNINBOUND`,
+        `RETURNCELL_NO`,
+        `TARE`,
+        `AREA_NO`,
+        `ZONE_NO`,
+        `CELL_NO`,
+        `QCZONE_NO`,
+        `HIGHVALUE`,
+        `FRANGIBLE`,
+        `CHUANWEIABLE`,
+        `SHELFLIFE_FLAG`,
+        `MAXINVENTORY_QTY`,
+        `TEMPCONTROL_FLAG`,
+        `TEMPMAX`,
+        `TEMPMIN`,
+        `HUMMAX`,
+        `HUMMIN`,
+        `TRANSPORTWAY`,
+        `TRANSPORTTYPE`,
+        `DEVIATION`,
+        `CONTAINERABLE`,
+        `PROBESNOUTBOUND`,
+        `UNIQUESNOUTBOUND`,
+        `INVENTORYLEAVEL` ,
+        `PROCESSCC`,
+        `REPLENISHPRIORITY`,
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `LENGTH`,
+        `WIDTH`,
+        `HEIGHT`,
+        `ADULT_USING_FLAG`,
+        `IRREGULAR_SHAPE_FLAG`,
+        `IMPORTED_FLAG`,
+        `BOX_MANAGE`,
+        `EXPENSIVE_FLAG`,
+        `ISBN`,
+        `AUTHOR`,
+        `PRESS`,
+        `BATCH_NO`,
+        `IMAGE_PATH`,
+        `FOREIGN_NAME`,
+        `SPEC`,
+        `sale_unit`,
+        `IS_ALLOTYPE`,
+        `omc_version`,
+        `PMX`,
+        `plate_gauge_bottom`,
+        `plate_gauge_height`,
+        `PPP`
+        from
+        masterbasic.bs_itembase
+        where
+        goods_no = #{goodId};
+    </insert>
+
+
+    <insert id="addBsItembaseAttr" parameterType="com.example.demo.entity.BsItembase">
+        insert
+        into
+        masterbasic.bs_itembase_ext_attr (
+        `GOODS_NO`,
+        `IN_SOLID_FLAG`,
+        `SHAPE`,
+        `ENCODER_COUNT`,
+        `ENCODER_DESCRIPTION`,
+        `AS_RS_MAX_PALLE_NUM`,
+        `FIRST_MAX_PALLE_NUM`,
+        `ASRS_PICK_THRESHOLD`,
+        `DAILY_MEAN_SALES`,
+        `PALLET_VOL`,
+        `CREATE_TIME`,
+        `UPDATE_TIME`,
+        `WAREHOUSE_NO`,
+        `CREATE_USER`,
+        `UPDATE_USER`,
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `str_value`,
+        `db_id`,
+        `useCategoryPackageCapacity`,
+        `packageCapacity`,
+        `omc_version`,
+        `execute_status`,
+        `isWholeLocation`
+
+        )
+        select
+        #{goodsNo},
+        `IN_SOLID_FLAG`,
+        `SHAPE`,
+        `ENCODER_COUNT`,
+        `ENCODER_DESCRIPTION`,
+        `AS_RS_MAX_PALLE_NUM`,
+        `FIRST_MAX_PALLE_NUM`,
+        `ASRS_PICK_THRESHOLD`,
+        `DAILY_MEAN_SALES`,
+        `PALLET_VOL`,
+        now(),
+        now(),
+        `WAREHOUSE_NO`,
+        #{createUser},
+        #{createUser},
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `str_value`,
+        `db_id`,
+        `useCategoryPackageCapacity`,
+        `packageCapacity`,
+        `omc_version`,
+        `execute_status`,
+        `isWholeLocation`
+        from
+        masterbasic.bs_itembase_ext_attr
+        where
+        goods_no = #{goodId};
+    </insert>
+
+
+    <insert id="addBsBarcodePool" parameterType="com.example.demo.entity.BsItembase">
+        insert
+        into
+        masterbasic.bs_barcode_pool (
+        `SKU`,
+        `BARCODE`,
+        `OWNER_NO`,
+        `CREATE_TIME`,
+        `UPDATE_TIME`,
+        `WAREHOUSE_NO`,
+        `CREATE_USER`,
+        `UPDATE_USER`,
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `BARCODE_NOTE`,
+        `SECOND_PACKING_UNIT`
+
+        )
+        select
+        #{goodsNo},
+        #{goodsNo},
+        `OWNER_NO`,
+        now(),
+        now(),
+        `WAREHOUSE_NO`,
+        #{createUser},
+        #{createUser},
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `BARCODE_NOTE`,
+        `SECOND_PACKING_UNIT`
+        from
+        masterbasic.bs_barcode_pool
+        where
+        `SKU` = #{goodId} and `BARCODE` = #{goodId};
+    </insert>
+
+
+    <insert id="addStockM" parameterType="com.example.demo.entity.BsItembase">
+
+        insert
+        into
+        masterbasic.st_stock_m (
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `WAREHOUSE_NO`,
+        `GOODS_NO`,
+        `CELL_NO`,
+        `CONTAINER_NO`,
+        `LOT_NO`,
+        `INTERNAL_LOT_NO`,
+        `CELL_QTY`,
+        `PACKING_UNIT`,
+        `PREPICKED_QTY`,
+        `PREMOVED_QTY`,
+        `NONSALES_QTY`,
+        `LOCKED_QTY`,
+        `CC_STAUS`,
+        `CREATE_TIME`,
+        `UPDATE_TIME`,
+        `CREATE_USER`,
+        `UPDATE_USER`,
+        `PRODUCT_LEVEL`,
+        `OWNER_NO`,
+        `YN`,
+        `MD5_VALUE`,
+        `FEATURE_CODE`
+
+        )
+        select
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `WAREHOUSE_NO`,
+        #{goodsNo},
+        `CELL_NO`,
+        '',
+        `LOT_NO`,
+        `INTERNAL_LOT_NO`,
+        '100',
+        `PACKING_UNIT`,
+        `PREPICKED_QTY`,
+        `PREMOVED_QTY`,
+        `NONSALES_QTY`,
+        `LOCKED_QTY`,
+        0,
+        now(),
+        now(),
+        #{createUser},
+        #{createUser},
+        `PRODUCT_LEVEL`,
+        `OWNER_NO`,
+        0,
+        md5(`MD5_VALUE`),
+        `FEATURE_CODE`
+        from
+        masterbasic.st_stock_m WHERE goods_no=#{goodId} and `PRODUCT_LEVEL` = 1 and yn =0 limit 1;
+    </insert>
+
+
+    <insert id="addZoneRef" parameterType="com.example.demo.entity.BsItembase">
+        insert
+        into
+        masterbasic.bs_goods_zone_ref (
+        `LEVEL_1`,
+        `LEVEL_2`,
+        `LEVEL_3`,
+        `OWNER_NO`,
+        `GOODS_NO`,
+        `GOODS_NAME`,
+        `GOODS_SHAPE`,
+        `AREA_NO`,
+        `SHELF_TYPE`,
+        `PICK_FLAG`,
+        `ZONE_NO`,
+        `DEFAULT_PICKUP`,
+        `REPLENISHMENT_CALC_WAY`,
+        `UPPER_BOUND`,
+        `SAFE_STOCK`,
+        `HAND_REPLENISH_QTY`,
+        `CREATE_TIME`,
+        `UPDATE_TIME`,
+        `CREATE_USER`,
+        `UPDATE_USER`,
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `WAREHOUSE_NO`,
+        `YN`
+
+        )
+        select
+        `LEVEL_1`,
+        `LEVEL_2`,
+        `LEVEL_3`,
+        `OWNER_NO`,
+        #{goodsNo},
+        #{name},
+        `GOODS_SHAPE`,
+        `AREA_NO`,
+        `SHELF_TYPE`,
+        `PICK_FLAG`,
+        `ZONE_NO`,
+        `DEFAULT_PICKUP`,
+        `REPLENISHMENT_CALC_WAY`,
+        `UPPER_BOUND`,
+        `SAFE_STOCK`,
+        `HAND_REPLENISH_QTY`,
+        now(),
+        now(),
+        #{createUser},
+        #{createUser},
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `WAREHOUSE_NO`,
+        `YN`
+        from
+        masterbasic.bs_goods_zone_ref WHERE goods_no=#{goodId};
+    </insert>
+
+    <insert id="addBoxRuleDef" parameterType="com.example.demo.entity.BsItembase">
+        insert
+        into
+        masterbasic.bs_sku_box_rule_def (
+        `goods_no`,
+        `box_rule_code`,
+        `box_rule_name`,
+        `base_unit_flag`,
+        `box_rule_spec`,
+        `box_length`,
+        `box_width`,
+        `box_Height`,
+        `box_weight`,
+        `plate_spec_num`,
+        `plate_spec_bottom_num`,
+        `plate_spec_height_num`,
+        `create_user`,
+        `create_time`,
+        `update_user`,
+        `update_time`,
+        `org_no`,
+        `distribute_no`,
+        `warehouse_no`,
+        `enable_flag`,
+        `yn`,
+        `relation_pack_code`
+
+        )
+        select
+        #{goodsNo},
+        `box_rule_code`,
+        `box_rule_name`,
+        `base_unit_flag`,
+        `box_rule_spec`,
+        `box_length`,
+        `box_width`,
+        `box_Height`,
+        `box_weight`,
+        `plate_spec_num`,
+        `plate_spec_bottom_num`,
+        `plate_spec_height_num`,
+        #{createUser},
+        now(),
+        #{createUser},
+        now(),
+        `org_no`,
+        `distribute_no`,
+        `warehouse_no`,
+        `enable_flag`,
+        `yn`,
+        `relation_pack_code`
+        from
+        masterbasic.bs_sku_box_rule_def WHERE goods_no=#{goodId};
+    </insert>
+
+    <insert id="addBsPack" parameterType="com.example.demo.entity.BsItembase">
+        insert
+        into
+        masterbasic.bs_pack (
+        `GOODS_NO`,
+        `PACKCODE`,
+        `PACK_NAME`,
+        `DESCRIPTION`,
+        `PACKING_UNIT`,
+        `PACKING_QTY`,
+        `PACKING_ORDER`,
+        `LENGTH`,
+        `WIDTH`,
+        `HEIGHT`,
+        `WIDTHUOM`,
+        `HEIGHTUOM`,
+        `LENGTHUOM`,
+        `WEIGHT`,
+        `WEIGHTUOM`,
+        `CREATE_TIME`,
+        `UPDATE_TIME`,
+        `WAREHOUSE_NO`,
+        `CREATE_USER`,
+        `UPDATE_USER`,
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `PACKING_KEY`
+
+        )
+        select
+        #{goodsNo},
+        CONCAT(#{goodsNo}, 'each'),
+        `PACK_NAME`,
+        `DESCRIPTION`,
+        `PACKING_UNIT`,
+        `PACKING_QTY`,
+        `PACKING_ORDER`,
+        `LENGTH`,
+        `WIDTH`,
+        `HEIGHT`,
+        `WIDTHUOM`,
+        `HEIGHTUOM`,
+        `LENGTHUOM`,
+        `WEIGHT`,
+        `WEIGHTUOM`,
+        now(),
+        now(),
+        `WAREHOUSE_NO`,
+        #{createUser},
+        #{createUser},
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `PACKING_KEY`
+        from
+        masterbasic.bs_pack WHERE goods_no=#{goodId};
+    </insert>
+
+    <insert id="addBsLotAttr" parameterType="com.example.demo.entity.BsItembase">
+        insert
+        into
+        masterbasic.bs_lotattributedef (
+        `GOODS_NO`,
+        `LOTATTRIBUTE`,
+        `DESCRIPTION`,
+        `VALIDRULE`,
+        `CREATE_TIME`,
+        `UPDATE_TIME`,
+        `WAREHOUSE_NO`,
+        `CREATE_USER`,
+        `UPDATE_USER`,
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `attributeCode`,
+        `attributeName`,
+        `showType`,
+        `batchType`
+
+        )
+        select
+        #{goodsNo},
+        `LOTATTRIBUTE`,
+        `DESCRIPTION`,
+        `VALIDRULE`,
+        now(),
+        now(),
+        `WAREHOUSE_NO`,
+        #{createUser},
+        #{createUser},
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `attributeCode`,
+        `attributeName`,
+        `showType`,
+        `batchType`
+        from
+        masterbasic.bs_lotattributedef where `GOODS_NO` = #{goodId};
+    </insert>
+
+    <insert id="addBsShelflife" parameterType="com.example.demo.entity.BsItembase">
+        insert
+        into
+        masterbasic.bs_shelflife (
+        `GOODS_NO`,
+        `DATEDURABILITY_FLAG`,
+        `DATEDURABILITYTYPE`,
+        `DATEDURABILITY`,
+        `DATEDURABILITYUOM`,
+        `PERINBOUNDDATEDURABILITYTIME`,
+        `PEROUTBOUNDDATEDURABILITYTIME`,
+        `FRESHNESS_FLAG`,
+        `FRESHNESSTIME`,
+        `CREATE_TIME`,
+        `UPDATE_TIME`,
+        `WAREHOUSE_NO`,
+        `CREATE_USER`,
+        `UPDATE_USER`,
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `shelflife_manager_type`
+
+        )
+        select
+        #{goodsNo},
+        `DATEDURABILITY_FLAG`,
+        `DATEDURABILITYTYPE`,
+        `DATEDURABILITY`,
+        `DATEDURABILITYUOM`,
+        `PERINBOUNDDATEDURABILITYTIME`,
+        `PEROUTBOUNDDATEDURABILITYTIME`,
+        `FRESHNESS_FLAG`,
+        `FRESHNESSTIME`,
+        now(),
+        now(),
+        `WAREHOUSE_NO`,
+        #{createUser},
+        #{createUser},
+        `ORG_NO`,
+        `DISTRIBUTE_NO`,
+        `YN`,
+        `shelflife_manager_type`
+        from
+        masterbasic.bs_shelflife where `GOODS_NO` = #{goodId};
+    </insert>
+
+</mapper>
