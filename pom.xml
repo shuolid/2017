@@ -41,6 +41,12 @@
 			<artifactId>jackson-dataformat-xml</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
+		</dependency>
+
 		<!--swagger-->
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -75,11 +81,11 @@
 			<version>4.0.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.thunisoft.arterybase</groupId>
-			<artifactId>ArteryBase</artifactId>
-			<version>3.6.2.2</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.thunisoft.arterybase</groupId>-->
+<!--			<artifactId>ArteryBase</artifactId>-->
+<!--			<version>3.6.2.2</version>-->
+<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.mybatis.generator</groupId>
