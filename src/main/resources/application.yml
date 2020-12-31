@@ -8,14 +8,14 @@ spring:
       gnored-interfaces[0]: enp0s3
   job:
     admin:
-      addresses: http://127.0.0.1:7777/xxl-job-admin
+      addresses: http://192.168.56.7:7777/xxl-job-admin
     accessToken:
 
     executor:
       port: 9998
       appname: xxl-job-executor-shuolid
-      address: http://127.0.0.1:9998
-      ip: 127.0.0.1
+      address:
+      ip:
       logpath: /usr/xxl-job/logs
       logretentiondays: 15
 
