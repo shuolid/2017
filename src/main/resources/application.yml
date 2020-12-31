@@ -10,7 +10,7 @@ xxl:
 
     executor:
       port: 9998
-      appname: xxl-job-executor-sample
+      appname: xxl-job-executor-shuolid
       address:
       ip:
       logpath:
