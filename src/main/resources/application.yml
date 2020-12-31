@@ -5,7 +5,7 @@ spring:
 xxl:
   job:
     admin:
-      addresses: http://192.168.56.7:7777/xxl-job-admin
+      addresses: http://10.0.2.15:7777/xxl-job-admin
     accessToken: ''
 
     executor:
