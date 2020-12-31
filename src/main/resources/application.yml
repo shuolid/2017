@@ -11,7 +11,7 @@ xxl:
     executor:
       port: 9998
       appname: xxl-job-executor-shuolid
-      address:
+      address: http://127.0.0.1:9998
       ip: 127.0.0.1
       logpath: /usr/xxl-job/logs
       logretentiondays: 15
