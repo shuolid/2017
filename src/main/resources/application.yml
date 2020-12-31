@@ -2,7 +2,10 @@ spring:
   profiles:
     active: dev
 
-xxl:
+
+  cloud:
+    inetutils:
+      gnored-interfaces[0]: enp0s3
   job:
     admin:
       addresses: http://127.0.0.1:7777/xxl-job-admin
@@ -15,3 +18,4 @@ xxl:
       ip: 127.0.0.1
       logpath: /usr/xxl-job/logs
       logretentiondays: 15
+
