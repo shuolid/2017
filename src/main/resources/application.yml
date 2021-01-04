@@ -2,7 +2,7 @@ spring:
   profiles:
     active: dev
 
-
+xxl:
   job:
     admin:
       addresses: http://192.168.56.7:7777/xxl-job-admin
