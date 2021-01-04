@@ -13,6 +13,6 @@ xxl:
       appname: xxl-job-executor-shuolid
       address:
       ip:
-      logpath: /usr/xxl-job/logs
+      logpath:
       logretentiondays: 15
 
