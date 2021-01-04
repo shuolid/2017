@@ -9,7 +9,7 @@ xxl:
     accessToken:
 
     executor:
-      port:
+      port: 9999
       appname: xxl-job-executor-shuolid
       address:
       ip:
