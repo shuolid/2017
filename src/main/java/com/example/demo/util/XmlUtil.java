@@ -66,4 +66,22 @@ public class XmlUtil {
         return  responseEntity.getBody().toString();
     }
 
+
+    public static String standardPostRequest(String url, Object data){
+        ObjectMapper objectMapper = new ObjectMapper();
+        HttpHeaders requestHeader = new HttpHeaders();
+        requestHeader.setContentType(MediaType.APPLICATION_JSON);
+        String requestBody = "";
+        try {
+            requestBody = objectMapper.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        log.info("post请求url：{},参数：{}",url,requestBody);
+        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, requestHeader);
+        ResponseEntity responseEntity = staticRestTemplate.postForEntity(url, requestEntity, String.class);
+        log.info("post响应结果：{}",responseEntity.getBody().toString());
+        return  responseEntity.getBody().toString();
+    }
+
 }

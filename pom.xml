@@ -16,6 +16,9 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<jsf-springboot.version>1.7.3.3</jsf-springboot.version>
+		<!-- jsf sdk       -->
+		<jsf.version>1.7.3</jsf.version>
 	</properties>
 
 	<dependencies>
@@ -68,6 +71,12 @@
 <!--			<version>2.7.0</version>-->
 		</dependency>
 
+		<dependency>
+			<groupId>com.jd.msp</groupId>
+			<artifactId>msp-service-api</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
 		<!--mysql数据库驱动-->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -98,6 +107,37 @@
 			<groupId>org.mybatis.generator</groupId>
 			<artifactId>mybatis-generator-core</artifactId>
 			<version>1.3.2</version>
+		</dependency>
+
+		<!-- jsf spring boot dependency -->
+		<dependency>
+			<groupId>com.jd.jsf</groupId>
+			<artifactId>jsf-spring-boot-starter</artifactId>
+			<version>${jsf-springboot.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.jd</groupId>
+					<artifactId>jsf</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.jd</groupId>
+			<artifactId>jsf</artifactId>
+			<version>${jsf.version}</version>
+		</dependency>
+
+		<!-- hibernate-validator -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.1.0.Final</version>
+		</dependency>
+		<!-- validation -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Final</version>
 		</dependency>
 	</dependencies>
 

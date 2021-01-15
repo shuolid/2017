@@ -47,7 +47,10 @@
 <!--        </javaClientGenerator>-->
 
         <!-- 指定要逆向分析哪些表：根据表要创建javaBean -->
-        <table tableName="bs_itembase" domainObjectName="BsItembase"></table>
+<!--        <table tableName="bs_itembase" domainObjectName="BsItembase"></table>-->
+
+        <table tableName="bs_systemconfig" domainObjectName="BsSystemconfig"></table>
+        <table tableName="bs_dicdetail" domainObjectName="BsDicdetail"></table>
 
         <!--&lt;!&ndash; 要生成哪些表 &ndash;&gt;-->
         <!--<table tableName="t_user" domainObjectName="user"-->

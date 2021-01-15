@@ -1,6 +1,18 @@
 spring:
   profiles:
     active: dev
+  jsf:
+    packages: com.example.demo
+    registry:
+      id: jsfregistry
+      index: i.jsf.jd.com
+    consumers:
+      - id: timlineSenderJsf # spring bean 名称, 可以通过 spring 依赖注入获取 consumer 对象
+        registry: jsfregistry
+        interfaceId: com.jd.msp.rpc.TimlineSenderJsf
+        alias: msp-open-test
+        protocol: jsf
+        url: 11.51.196.145:22000
 
 xxl:
   job:

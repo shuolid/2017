@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.DicDetailMapper">
+    <select id="selectLastMinuteUpdateDicDetailList" resultType="com.example.demo.entity.BsDicdetail">
+        select code_type as codeType,value,dicdetail_name as dicdetailName,update_user as updateUser
+        from masterbasic.bs_dicdetail  where left(`UPDATE_TIME`,16) = left(date_add(now(), interval -1 minute),16);
+    </select>
+
+</mapper>
