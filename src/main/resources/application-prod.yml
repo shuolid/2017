@@ -1,5 +1,5 @@
-server:
-  port: 8082
+#server:
+#  port: 8082
 spring:
   #数据库连接配置
   datasource:
@@ -13,3 +13,17 @@ mybatis:
   #mapper配置文件
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.example.demo.entity
+
+xxl:
+  job:
+    admin:
+      addresses: http://192.168.56.7:7777/xxl-job-admin
+    accessToken:
+
+    executor:
+      port: 9999
+      appname: xxl-job-executor-shuolid
+      address:
+      ip:
+      logpath: /data/applogs/xxl-job/jobhandler
+      logretentiondays: 30
