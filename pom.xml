@@ -107,9 +107,9 @@
 			<properties>
 				<profileActive>dev</profileActive>
 			</properties>
-<!--			<activation>-->
-<!--				<activeByDefault>true</activeByDefault>-->
-<!--			</activation>-->
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 		</profile>
 		<profile>
 			<id>prod</id>
@@ -124,6 +124,15 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<!--springBoot支持默认的$符填充配置文件的value-->
+					<useDefaultDelimiters>true</useDefaultDelimiters>
+				</configuration>
 			</plugin>
 
 			<plugin>
