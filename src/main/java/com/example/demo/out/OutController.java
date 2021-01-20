@@ -42,5 +42,12 @@ public class OutController {
         return outService.downLoadShipment(goodNo, goodNum, excuteCount, sendPay, routeRule, bizType);
     }
 
+    @PostMapping("/packageSwitch")
+    @ApiImplicitParam(name = "packageSwitch", paramType = "query", allowableValues = "开启,关闭", defaultValue = "关闭")
+    @ApiOperation(value = "是否开启包裹生产", notes = "打开或关闭包裹生产")
+    public ResultModel packageSwitch(@RequestParam("packageSwitch")String packageSwitch){
+        return outService.packageSwitch(packageSwitch);
+    }
+
 
 }

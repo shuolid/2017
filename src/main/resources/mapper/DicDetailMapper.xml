@@ -6,4 +6,9 @@
         from masterbasic.bs_dicdetail  where left(`UPDATE_TIME`,16) = left(date_add(now(), interval -1 minute),16);
     </select>
 
+    <update id="packageSwitch" parameterType="java.lang.Integer">
+        update masterbasic.bs_dicdetail set `VALUE` = #{value} where code_type in
+        ('wms5-wave-package','wms5_wave_orderType','wms5_wave_MergeFlag','ParcelProduction');
+    </update>
+
 </mapper>

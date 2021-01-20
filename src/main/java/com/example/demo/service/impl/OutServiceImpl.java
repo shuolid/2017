@@ -3,12 +3,14 @@ package com.example.demo.service.impl;
 import com.example.demo.BizType;
 import com.example.demo.apiModel.ResultModel;
 import com.example.demo.apiModel.downLoadShipment.*;
+import com.example.demo.mapper.DicDetailMapper;
 import com.example.demo.service.OutService;
 import com.example.demo.util.CompressUtil;
 import com.example.demo.util.XmlUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,6 +21,9 @@ import java.util.*;
 @Service
 public class OutServiceImpl implements OutService {
     private  Logger log = LoggerFactory.getLogger(OutServiceImpl.class);
+
+    @Autowired
+    private DicDetailMapper dicDetailMapper;
 
     @Override
     public ResultModel downLoadShipment(String goodNo, String goodNum, Integer excuteCount, String sendPay, String routeRule, BizType bizType) {
@@ -127,6 +132,18 @@ public class OutServiceImpl implements OutService {
             return ResultModel.builder().code(1).message("失败").data(orderIdList).build();
         }
         return ResultModel.builder().code(0).message("成功").data(orderIdList).build();
+    }
+
+    @Override
+    public ResultModel packageSwitch(String packageSwitch) {
+        if("开启".equals(packageSwitch)){
+            log.info(packageSwitch + "包裹生产");
+            dicDetailMapper.packageSwitch(1);
+        }else{
+            log.info(packageSwitch + "包裹生产");
+            dicDetailMapper.packageSwitch(0);
+        }
+        return ResultModel.builder().code(0).message(packageSwitch + "包裹生产成功").data(null).build();
     }
 
     private String getPrintInfo(OdOrders odOrders, Map<String, Object> distributionInfo) throws Exception {
