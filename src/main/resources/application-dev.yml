@@ -1,6 +1,18 @@
 server:
   port: 8081
 spring:
+  jsf:
+    packages: com.example.demo
+    registry:
+      id: jsfregistry
+      index: i.jsf.jd.com
+    consumers:
+      - id: timlineSenderJsf # spring bean 名称, 可以通过 spring 依赖注入获取 consumer 对象
+        registry: jsfregistry
+        interfaceId: com.jd.msp.rpc.TimlineSenderJsf
+        alias: msp-open-test
+        protocol: jsf
+        url: 11.51.196.145:22000
   #数据库连接配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,3 +25,17 @@ mybatis:
   #mapper配置文件
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.example.demo.entity
+
+xxl:
+  job:
+    admin:
+      addresses: http://192.168.56.7:7777/xxl-job-admin
+    accessToken:
+
+    executor:
+      port: 9999
+      appname: xxl-job-executor-shuolid
+      address:
+      ip:
+      logpath: /data/applogs/xxl-job/jobhandler
+      logretentiondays: 30

@@ -1,30 +1,4 @@
 spring:
   profiles:
-    active: dev
-  jsf:
-    packages: com.example.demo
-    registry:
-      id: jsfregistry
-      index: i.jsf.jd.com
-    consumers:
-      - id: timlineSenderJsf # spring bean 名称, 可以通过 spring 依赖注入获取 consumer 对象
-        registry: jsfregistry
-        interfaceId: com.jd.msp.rpc.TimlineSenderJsf
-        alias: msp-open-test
-        protocol: jsf
-        url: 11.51.196.145:22000
-
-xxl:
-  job:
-    admin:
-      addresses: http://192.168.56.7:7777/xxl-job-admin
-    accessToken:
-
-    executor:
-      port: 9999
-      appname: xxl-job-executor-shuolid
-      address:
-      ip:
-      logpath: /data/applogs/xxl-job/jobhandler
-      logretentiondays: 30
+    active: @profileActive@
 

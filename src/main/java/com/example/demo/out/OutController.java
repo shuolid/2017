@@ -4,6 +4,7 @@ import com.example.demo.BizType;
 import com.example.demo.apiModel.BizTypeEnum;
 import com.example.demo.apiModel.ResultModel;
 import com.example.demo.apiModel.SendPayEnum;
+import com.example.demo.apiModel.UrlEnum;
 import com.example.demo.service.OutService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class OutController {
 
     @PostMapping("/downLoadShipment")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "routeRule", paramType = "query", allowableValues = "55,98", defaultValue = "55"),
+        @ApiImplicitParam(name = "routeRule", paramType = "query", allowableValues = "55,980", defaultValue = "55"),
         @ApiImplicitParam(name = "sendPay", paramType = "query", allowableValues = "普通C单,直通车订单", defaultValue = "普通C单")
     })
     @ApiOperation(value = "出库接单", notes = "多商品，多个，多次出库接单")
@@ -32,11 +33,12 @@ public class OutController {
             @ApiParam(value = "接口执行次数",required = true, example = "1") @RequestParam(name = "excuteCount") Integer excuteCount,
             @RequestParam("sendPay")String sendPay,
             @RequestParam("routeRule")String routeRule){
+
         BizType bizType = BizType.builder()
                 .bizType(BizTypeEnum.DOWNLOAD_SHIPMENT.getBizType())
                 .uuid(BizTypeEnum.DOWNLOAD_SHIPMENT.getUuid())
                 .callCode(BizTypeEnum.DOWNLOAD_SHIPMENT.getCallCode())
-                .url(BizTypeEnum.DOWNLOAD_SHIPMENT.getUrl())
+                .url(UrlEnum.getEnumByKey(routeRule).getUrl())
                 .routeRule(routeRule)
                 .build();
 
