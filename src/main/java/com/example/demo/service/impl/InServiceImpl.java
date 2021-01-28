@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.BizType;
 import com.example.demo.apiModel.ResultModel;
+import com.example.demo.apiModel.Return;
 import com.example.demo.apiModel.asnDataImport.ParkAsnD;
 import com.example.demo.apiModel.asnDataImport.ParkAsnExpend;
 import com.example.demo.apiModel.asnDataImport.ParkAsnM;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -23,17 +23,17 @@ public class InServiceImpl implements InService {
     @Override
     public ResultModel asnDataImport(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType) {
         List<String> orderIdList =  new ArrayList<>();
+        Return result = new Return();
         try {
             for(int i = 0; i<excuteCount; i++){
                 String inboundNo = Long.toString(System.currentTimeMillis() + i);
-                Calendar calendar = Calendar.getInstance();
 
                 ParkAsnM parkAsnM = new ParkAsnM();
                 parkAsnM.setInboundNo(inboundNo);
                 parkAsnM.setPoNo(inboundNo);
                 parkAsnM.setPoType(1);//1：采购单；2：ASN单
                 parkAsnM.setDistributeNo("6");
-                parkAsnM.setDistributeNo(routeRule);
+                parkAsnM.setWarehouseNo(routeRule);
                 parkAsnM.setInboundType("0");
                 parkAsnM.setInboundStatus(0);
                 parkAsnM.setTotalQty(60.0d);
@@ -99,17 +99,21 @@ public class InServiceImpl implements InService {
 
                 ParkAsnExpend twiceSerialFlag = new ParkAsnExpend();
                 twiceSerialFlag.setKey("twiceSerialFlag");
+                twiceSerialFlag.setKey("");
                 parkAsnExpendList.add(twiceSerialFlag);
 
                 parkAsnM.setParkAsnExpendList(parkAsnExpendList);
 
-                XmlUtil.getStringResponse(bizType,parkAsnM);
-                orderIdList.add(inboundNo);
+                result = XmlUtil.getStringResponse(bizType,XmlUtil.convertToXml(parkAsnM));
+                if("1".equals(result.getResultCode())){
+                    orderIdList.add(inboundNo);
+                    return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
+                }
             }
         } catch (Exception e) {
             log.error("采购单接口异常：",e);
-            return ResultModel.builder().code(1).message("失败").data(orderIdList).build();
+            return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
         }
-        return ResultModel.builder().code(0).message("成功").data(orderIdList).build();
+        return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
     }
 }

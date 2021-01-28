@@ -1,6 +1,7 @@
 package com.example.demo.util;
 
 import com.example.demo.BizType;
+import com.example.demo.apiModel.Return;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -11,12 +12,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.sax.SAXSource;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 @Component
@@ -33,7 +41,7 @@ public class XmlUtil {
         this.staticRestTemplate = restTemplate;
     }
 
-    public static String getStringResponse(BizType bizType, Object data){
+    public static Return getStringResponse(BizType bizType, Object data){
         ObjectMapper objectMapper = new ObjectMapper();
 
         HttpHeaders requestHeader = new HttpHeaders();
@@ -52,8 +60,11 @@ public class XmlUtil {
 
             xmlBuilder.append("</arg0>");
             xmlBuilder.append("<arg1>");
-
-            xmlBuilder.append(objectMapper.writeValueAsString(data));
+            if(data instanceof String){
+                xmlBuilder.append("<![CDATA[").append(data).append("]]>");
+            }else {
+                xmlBuilder.append(objectMapper.writeValueAsString(data));
+            }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -66,8 +77,9 @@ public class XmlUtil {
         log.info("{}接口请求参数：{}",bizType.getBizType(),xmlBuilder.toString());
         HttpEntity<String> requestEntity = new HttpEntity<>(xmlBuilder.toString(), requestHeader);
         ResponseEntity responseEntity = staticRestTemplate.postForEntity(bizType.getUrl(), requestEntity, String.class);
-        log.info("{}接口响应结果：{}",bizType.getBizType(),responseEntity.getBody().toString());
-        return  responseEntity.getBody().toString();
+        String xmlResult = responseEntity.getBody().toString();
+        log.info("{}接口响应结果：{}",bizType.getBizType(),xmlResult);
+        return XmlUtil.convertToJava(xmlResult.substring(xmlResult.indexOf("return") - 1,xmlResult.lastIndexOf("return") + 7),Return.class);
     }
 
 
@@ -107,6 +119,32 @@ public class XmlUtil {
             e.printStackTrace();
         }
         return sw.toString();
+    }
+
+
+    public static <T> T convertToJava(String xml, Class<T> c) {
+        if (xml == null || xml.equals(""))
+            return null;
+        T t = null;
+        StringReader reader = null;
+        try {
+            JAXBContext context = JAXBContext.newInstance(c);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            reader = new StringReader(xml);
+//            t = (T) unmarshaller.unmarshal(reader);
+            //忽略命名空间
+            SAXParserFactory sax = SAXParserFactory.newInstance();
+            sax.setNamespaceAware(false);
+            XMLReader xmlReader = sax.newSAXParser().getXMLReader();
+            Source source = new SAXSource(xmlReader,new InputSource(reader));
+            t = (T) unmarshaller.unmarshal(source);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+        return t;
     }
 
 }

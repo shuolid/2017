@@ -1,10 +1,7 @@
 package com.example.demo.apiModel.asnDataImport;
 
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -24,10 +21,12 @@ public class ParkAsnM extends AbstractWarehouseInfo implements AsnKey {
     private String supplierName;
     private Integer eclpSign;
     private String orderAttribute;
-    @XmlElement(name = "ibReceivingTaskDList")
+    @XmlElement(name = "com.jd.poDownStreamWorker.worker.domain.IbReceivingTaskD")
+    @XmlElementWrapper(name = "ibReceivingTaskDList")
     private List<ParkAsnD> parkAsnDList;
     private List<String> ibItemJfsList;
-    @XmlElement(name = "poExtInfos")
+    @XmlElement(name = "PoExtInfo")
+    @XmlElementWrapper(name = "poExtInfos")
     private List<ParkAsnExpend> parkAsnExpendList;
     private Boolean needBooking;
     private String orgNo;

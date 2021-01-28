@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.BizType;
 import com.example.demo.apiModel.ResultModel;
+import com.example.demo.apiModel.Return;
 import com.example.demo.apiModel.downLoadShipment.*;
 import com.example.demo.mapper.DicDetailMapper;
 import com.example.demo.service.OutService;
@@ -28,6 +29,7 @@ public class OutServiceImpl implements OutService {
     @Override
     public ResultModel downLoadShipment(String goodNo, String goodNum, Integer excuteCount, String sendPay, String routeRule, BizType bizType) {
         List<String> orderIdList =  new ArrayList<>();
+        Return result = new Return();
         try {
             for(int i = 0; i<excuteCount; i++){
                 String orderId = Long.toString(System.currentTimeMillis() + i);
@@ -124,14 +126,17 @@ public class OutServiceImpl implements OutService {
                 odPrintInfo.setInvoiceDetail("");
                 odOrders.setOdPrintInfo(odPrintInfo);
 
-                XmlUtil.getStringResponse(bizType,odOrders);
-                orderIdList.add(orderId);
+                result = XmlUtil.getStringResponse(bizType,odOrders);
+                if("1".equals(result.getResultCode())){
+                    orderIdList.add(orderId);
+                    return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
+                }
             }
         } catch (Exception e) {
             log.error("接单接口异常：",e);
-            return ResultModel.builder().code(1).message("失败").data(orderIdList).build();
+            return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
         }
-        return ResultModel.builder().code(0).message("成功").data(orderIdList).build();
+        return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
     }
 
     @Override

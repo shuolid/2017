@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.apiModel.Return;
 import com.example.demo.apiModel.asnDataImport.ParkAsnD;
 import com.example.demo.apiModel.asnDataImport.ParkAsnExpend;
 import com.example.demo.apiModel.asnDataImport.ParkAsnM;
@@ -113,5 +114,13 @@ public class Test {
 
         parkAsnM.setParkAsnExpendList(parkAsnExpendList);
         System.out.println(XmlUtil.convertToXml(parkAsnM));
+
+        String s = "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:queryWsResponse xmlns:ns2=\"http://wms3.360buy.com\"><return><resultCode>1</resultCode><resultMessage>调用成功</resultMessage></return></ns2:queryWsResponse></soap:Body></soap:Envelope>\n";
+        String s2 = "<return><resultCode>1</resultCode><resultMessage>调用成功</resultMessage></return>";
+        System.out.println(s.substring(s.indexOf("return") - 1,s.lastIndexOf("return") + 7));
+        System.out.println(XmlUtil.convertToJava(s2, Return.class).getResultCode());
+        System.out.println(XmlUtil.convertToJava(s2, Return.class).getResultMessage());
+
+
     }
 }

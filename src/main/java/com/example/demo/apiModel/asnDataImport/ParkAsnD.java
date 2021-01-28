@@ -1,15 +1,10 @@
 package com.example.demo.apiModel.asnDataImport;
 
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import java.util.List;
 
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "com.jd.poDownStreamWorker.worker.domain.IbReceivingTaskD")
 public class ParkAsnD {
     private String destOrgNo;
     private String destWarehouseNo;
