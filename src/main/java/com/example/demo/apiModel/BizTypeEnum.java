@@ -5,8 +5,8 @@ package com.example.demo.apiModel;
 @SuppressWarnings("unused")
 public enum BizTypeEnum {
     TEST("querySkuAmountByTaskNoAndStatus", "uuid","360BUY.WMS3.WS.CALLCODE.wave","http://merge.wms5.jd.test/pickingplan/services/waveWS"),
-    DOWNLOAD_SHIPMENT("downLoadShipment", "uuid","360BUY.WMS3.WS.CALLCODE.wave","http://merge.wms5.jd.test/pickingplan/services/waveWS");
-
+    DOWNLOAD_SHIPMENT("downLoadShipment", "uuid","360BUY.WMS3.WS.CALLCODE.wave","http://merge.wms5.jd.test/pickingplan/services/waveWS"),
+    ASN_DATA_IMPORT("wms_ib_receScheduling_asnDataImport", "uuid","360BUY.WMS3.WS.CALLCODE.100","http://merge.wms5.jd.test/inbound/services/receScheduling");
 
     private String bizType;
     private String uuid;
