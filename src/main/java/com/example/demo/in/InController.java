@@ -21,14 +21,18 @@ public class InController {
     @PostMapping("/asnDataImport")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "routeRule", paramType = "query", allowableValues = "55", defaultValue = "55"),
-            @ApiImplicitParam(name = "asnType", paramType = "query", allowableValues = "采购单,采购ASN单", defaultValue = "采购单")
+            @ApiImplicitParam(name = "asnType", paramType = "query", allowableValues = "采购单,采购ASN单", defaultValue = "采购单"),
+            @ApiImplicitParam(name = "profitLossType", paramType = "query", allowableValues = "B单,C单", defaultValue = "C单")
     })
     @ApiOperation(value = "入库下单", notes = "多商品，多个，多次入库下单")
     public ResultModel asnDataImport(
             @ApiParam(value = "商品编号",required = true, defaultValue = "100391") @RequestParam(name = "goodId") String goodNo,
             @ApiParam(value = "商品数量",required = true, defaultValue = "1") @RequestParam(name = "goodNum") String goodNum,
             @ApiParam(value = "接口执行次数",required = true, example = "1") @RequestParam(name = "excuteCount") Integer excuteCount,
+            @ApiParam(value = "渠道id",required = true, example = "1") @RequestParam(name = "profitLossId") String profitLossId,
+            @ApiParam(value = "渠道采购数量",required = true, example = "1") @RequestParam(name = "qty") String profitLossQty,
             @RequestParam("asnType")String asnType,
+            @RequestParam("profitLossType")String profitLossType,
             @RequestParam("routeRule")String routeRule){
 
         BizType bizType = BizType.builder()
@@ -39,6 +43,6 @@ public class InController {
                 .routeRule(routeRule)
                 .build();
 
-        return inService.asnDataImport(goodNo, goodNum, excuteCount, routeRule, bizType);
+        return inService.asnDataImport(goodNo, goodNum, excuteCount, routeRule, bizType,asnType,profitLossId,profitLossType,profitLossQty);
     }
 }

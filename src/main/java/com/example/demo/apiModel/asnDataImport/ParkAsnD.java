@@ -1,11 +1,19 @@
 package com.example.demo.apiModel.asnDataImport;
 
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.math.BigDecimal;
 import java.util.List;
 
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ParkAsnD {
+    @XmlElement(name = "com.jd.poDownStreamWorker.worker.domain.SkuProfitLossInfo")
+    @XmlElementWrapper(name = "skuProfitLossInfoList")
+    private List<SkuProfitLossInfo> skuProfitLossInfoList;
     private String destOrgNo;
     private String destWarehouseNo;
     private Integer innerId;
@@ -247,5 +255,13 @@ public class ParkAsnD {
 
     public void setUnitPackage(Integer unitPackage) {
         this.unitPackage = unitPackage;
+    }
+
+    public List<SkuProfitLossInfo> getSkuProfitLossInfoList() {
+        return skuProfitLossInfoList;
+    }
+
+    public void setSkuProfitLossInfoList(List<SkuProfitLossInfo> skuProfitLossInfoList) {
+        this.skuProfitLossInfoList = skuProfitLossInfoList;
     }
 }

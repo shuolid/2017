@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -129,14 +130,16 @@ public class OutServiceImpl implements OutService {
                 result = XmlUtil.getStringResponse(bizType,odOrders);
                 if("1".equals(result.getResultCode())){
                     orderIdList.add(orderId);
-                    return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
                 }
             }
         } catch (Exception e) {
             log.error("接单接口异常：",e);
             return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
         }
-        return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
+        if(CollectionUtils.isEmpty(orderIdList)){
+            return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
+        }
+        return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
     }
 
     @Override

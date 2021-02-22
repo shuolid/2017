@@ -6,11 +6,13 @@ import com.example.demo.apiModel.Return;
 import com.example.demo.apiModel.asnDataImport.ParkAsnD;
 import com.example.demo.apiModel.asnDataImport.ParkAsnExpend;
 import com.example.demo.apiModel.asnDataImport.ParkAsnM;
+import com.example.demo.apiModel.asnDataImport.SkuProfitLossInfo;
 import com.example.demo.service.InService;
 import com.example.demo.util.XmlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,17 +23,22 @@ public class InServiceImpl implements InService {
     private  Logger log = LoggerFactory.getLogger(InServiceImpl.class);
 
     @Override
-    public ResultModel asnDataImport(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType) {
+    public ResultModel asnDataImport(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType, String asnType, String profitLossId, String profitLossType, String profitLossQty) {
         List<String> orderIdList =  new ArrayList<>();
         Return result = new Return();
         try {
             for(int i = 0; i<excuteCount; i++){
                 String inboundNo = Long.toString(System.currentTimeMillis() + i);
-
                 ParkAsnM parkAsnM = new ParkAsnM();
-                parkAsnM.setInboundNo(inboundNo);
-                parkAsnM.setPoNo(inboundNo);
-                parkAsnM.setPoType(1);//1：采购单；2：ASN单
+                if("采购ASN单".equals(asnType)){
+                    parkAsnM.setInboundNo("ASN" + inboundNo);
+                    parkAsnM.setPoNo(inboundNo);
+                    parkAsnM.setPoType(2);//1：采购单；2：ASN单
+                }else {
+                    parkAsnM.setInboundNo(inboundNo);
+                    parkAsnM.setPoNo(inboundNo);
+                    parkAsnM.setPoType(1);//1：采购单；2：ASN单
+                }
                 parkAsnM.setDistributeNo("6");
                 parkAsnM.setWarehouseNo(routeRule);
                 parkAsnM.setInboundType("0");
@@ -57,6 +64,16 @@ public class InServiceImpl implements InService {
                     parkAsnD.setExcess("0");
                     parkAsnD.setExceedQty(-1d);
                     parkAsnD.setUnitPackage(1);
+
+                    //渠道
+                    List<SkuProfitLossInfo> skuProfitLossInfoList = new ArrayList<>();
+                    SkuProfitLossInfo skuProfitLossInfo  =  new SkuProfitLossInfo();
+                    skuProfitLossInfo.setProfitLossId(profitLossId);
+                    skuProfitLossInfo.setQty(profitLossQty);
+                    skuProfitLossInfoList.add(skuProfitLossInfo);
+                    parkAsnD.setSkuProfitLossInfoList(skuProfitLossInfoList);
+
+
                     parkAsnDList.add(parkAsnD);
                 }
                 parkAsnM.setParkAsnDList(parkAsnDList);
@@ -99,21 +116,31 @@ public class InServiceImpl implements InService {
 
                 ParkAsnExpend twiceSerialFlag = new ParkAsnExpend();
                 twiceSerialFlag.setKey("twiceSerialFlag");
-                twiceSerialFlag.setKey("");
+                twiceSerialFlag.setValue("");
                 parkAsnExpendList.add(twiceSerialFlag);
+
+                ParkAsnExpend channelType = new ParkAsnExpend();
+                channelType.setKey("channelType");
+                channelType.setValue("2");
+                if("B单".equals(profitLossType)){
+                    channelType.setValue("1");
+                }
+                parkAsnExpendList.add(channelType);
 
                 parkAsnM.setParkAsnExpendList(parkAsnExpendList);
 
                 result = XmlUtil.getStringResponse(bizType,XmlUtil.convertToXml(parkAsnM));
                 if("1".equals(result.getResultCode())){
                     orderIdList.add(inboundNo);
-                    return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
                 }
             }
         } catch (Exception e) {
             log.error("采购单接口异常：",e);
             return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
         }
-        return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
+        if(CollectionUtils.isEmpty(orderIdList)){
+            return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
+        }
+        return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
     }
 }
