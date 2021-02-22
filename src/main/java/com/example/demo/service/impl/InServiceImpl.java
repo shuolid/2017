@@ -7,20 +7,34 @@ import com.example.demo.apiModel.asnDataImport.ParkAsnD;
 import com.example.demo.apiModel.asnDataImport.ParkAsnExpend;
 import com.example.demo.apiModel.asnDataImport.ParkAsnM;
 import com.example.demo.apiModel.asnDataImport.SkuProfitLossInfo;
+import com.example.demo.apiModel.importReceivingTask.SparePartsImportD;
+import com.example.demo.apiModel.importReceivingTask.SparePartsImportM;
+import com.example.demo.apiModel.issuedOrders.ProductRequest;
+import com.example.demo.apiModel.issuedOrders.ReturnRequest;
+import com.example.demo.entity.BsItembase;
+import com.example.demo.mapper.GoodMapper;
 import com.example.demo.service.InService;
 import com.example.demo.util.XmlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class InServiceImpl implements InService {
     private  Logger log = LoggerFactory.getLogger(InServiceImpl.class);
+    @Autowired
+    private GoodMapper goodMapper;
 
     @Override
     public ResultModel asnDataImport(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType, String asnType, String profitLossId, String profitLossType, String profitLossQty) {
@@ -136,6 +150,121 @@ public class InServiceImpl implements InService {
             }
         } catch (Exception e) {
             log.error("采购单接口异常：",e);
+            return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
+        }
+        if(CollectionUtils.isEmpty(orderIdList)){
+            return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
+        }
+        return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
+    }
+
+    @Override
+    public ResultModel importReceivingTask(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType, String asnType, String profitLossId, String profitLossType, String profitLossQty) {
+        List<String> orderIdList =  new ArrayList<>();
+        Return result = new Return();
+        try {
+            for(int i = 0; i<excuteCount; i++){
+                String inboundNo = Long.toString(System.currentTimeMillis() + i);
+                SparePartsImportM sparePartsImportM = new SparePartsImportM();
+                Date date = new Date();
+                String seqNo = UUID.randomUUID().toString().replaceAll("-", "");
+                sparePartsImportM.setChecker("备件库");
+                sparePartsImportM.setClassType("0");
+                sparePartsImportM.setLocNo("3");
+                sparePartsImportM.setNotes("B");
+                sparePartsImportM.setPurDate(date);
+                sparePartsImportM.setSeqNo(seqNo);
+                sparePartsImportM.setSheetId(inboundNo);
+                sparePartsImportM.setSheetType("4");
+                sparePartsImportM.setValidDate(date);
+                sparePartsImportM.setWareNo(routeRule);
+                sparePartsImportM.setErpWareNo(routeRule);
+                sparePartsImportM.setWmsTarget("6,6," + routeRule);
+
+                List<SparePartsImportD> sparePartsImportDList = new ArrayList<>();
+                String [] goodsArr = goodNo.split(",");
+                for (int j =0; j< goodsArr.length; j++) {
+                    SparePartsImportD sparePartsImportD = new SparePartsImportD();
+                    sparePartsImportD.setSeqNo(seqNo);
+                    sparePartsImportD.setGoodsId(goodsArr[j]);
+                    sparePartsImportD.setSheetId(inboundNo);
+                    sparePartsImportD.setLocNo("3");
+                    sparePartsImportD.setPkCount(0);
+                    sparePartsImportD.setQty(10d);
+                    sparePartsImportD.setSerialId("1");
+                    sparePartsImportD.setSupplierNo("lsbjgdgc");
+                    //渠道
+
+                    sparePartsImportDList.add(sparePartsImportD);
+                }
+                sparePartsImportM.setSparePartsImportDList(sparePartsImportDList);
+
+
+                result = XmlUtil.getStringResponse(bizType,XmlUtil.convertToXml(sparePartsImportM));
+                if("1".equals(result.getResultCode())){
+                    orderIdList.add(inboundNo);
+                }
+            }
+        } catch (Exception e) {
+            log.error("备件库入大库接口异常：",e);
+            return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
+        }
+        if(CollectionUtils.isEmpty(orderIdList)){
+            return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
+        }
+        return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
+    }
+
+    @Override
+    public ResultModel issuedOrders(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType, String asnType, String profitLossId, String profitLossType, String profitLossQty) {
+        List<String> orderIdList =  new ArrayList<>();
+        Return result = new Return();
+        try {
+            for(int i = 0; i<excuteCount; i++){
+                String inboundNo = Long.toString(System.currentTimeMillis() + i);
+                ReturnRequest returnRequest = new ReturnRequest();
+                String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                String sendCode = UUID.randomUUID().toString().replaceAll("-", "");
+                returnRequest.setCky2("6");
+                returnRequest.setInStore(routeRule);
+                returnRequest.setLossQuantity(0);
+                returnRequest.setOperateTime(date);
+                returnRequest.setOrderId(inboundNo);
+                returnRequest.setOrgId("6");
+                returnRequest.setPackageCodes(inboundNo);
+                returnRequest.setSendCode(sendCode);
+                returnRequest.setStoreId(routeRule);
+                returnRequest.setUserName("swagger测试");
+                returnRequest.setSource(1);
+
+                List<ProductRequest> productRequests = new ArrayList<>();
+                String [] goodsArr = goodNo.split(",");
+                for (int j =0; j< goodsArr.length; j++) {
+                    ProductRequest productRequest = new ProductRequest();
+                    productRequest.setProductId(goodsArr[j]);
+                    productRequest.setProductLoss(1);
+                    Example example = new Example(BsItembase.class);
+                    example.createCriteria().andEqualTo("goodsNo",goodsArr[j]);
+                    List<BsItembase> list  = goodMapper.selectByExample(example);
+                    if(!CollectionUtils.isEmpty(list)){
+                        productRequest.setProductName(list.get(0).getName());
+                    }
+                    productRequest.setProductNum(10);
+                    productRequest.setProductPrice(39.9d);
+
+                    //渠道
+                    productRequests.add(productRequest);
+                }
+                returnRequest.setProductRequests(productRequests);
+
+
+                result = XmlUtil.getStringResponse(bizType,XmlUtil.convertToXml(returnRequest));
+                if("1".equals(result.getResultCode())){
+                    orderIdList.add(inboundNo);
+                }
+            }
+        } catch (Exception e) {
+            log.error("客户退货单接口异常：",e);
             return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
         }
         if(CollectionUtils.isEmpty(orderIdList)){

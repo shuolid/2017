@@ -5,4 +5,8 @@ import com.example.demo.apiModel.ResultModel;
 
 public interface InService {
     ResultModel asnDataImport(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType, String asnType, String profitLossId, String profitLossType, String profitLossQty);
+
+    ResultModel importReceivingTask(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType, String asnType, String profitLossId, String profitLossType, String profitLossQty);
+
+    ResultModel issuedOrders(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType, String asnType, String profitLossId, String profitLossType, String profitLossQty);
 }
