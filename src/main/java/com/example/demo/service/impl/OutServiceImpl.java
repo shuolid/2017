@@ -4,7 +4,11 @@ import com.example.demo.BizType;
 import com.example.demo.apiModel.ResultModel;
 import com.example.demo.apiModel.Return;
 import com.example.demo.apiModel.downLoadShipment.*;
+import com.example.demo.apiModel.receivedScrapShipment.ScrapShipment;
+import com.example.demo.apiModel.receivedScrapShipment.ScrapWare;
+import com.example.demo.entity.BsItembase;
 import com.example.demo.mapper.DicDetailMapper;
+import com.example.demo.mapper.GoodMapper;
 import com.example.demo.service.OutService;
 import com.example.demo.util.CompressUtil;
 import com.example.demo.util.XmlUtil;
@@ -14,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,6 +31,9 @@ public class OutServiceImpl implements OutService {
 
     @Autowired
     private DicDetailMapper dicDetailMapper;
+
+    @Autowired
+    private GoodMapper goodMapper;
 
     @Override
     public ResultModel downLoadShipment(String goodNo, String goodNum, Integer excuteCount, String sendPay, String routeRule, BizType bizType) {
@@ -133,7 +141,7 @@ public class OutServiceImpl implements OutService {
                 }
             }
         } catch (Exception e) {
-            log.error("接单接口异常：",e);
+            log.error("客单出库接口异常：",e);
             return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
         }
         if(CollectionUtils.isEmpty(orderIdList)){
@@ -152,6 +160,172 @@ public class OutServiceImpl implements OutService {
             dicDetailMapper.packageSwitch(0);
         }
         return ResultModel.builder().code(0).message(packageSwitch + "包裹生产成功").data(null).build();
+    }
+
+    @Override
+    public ResultModel receivedOwnerShipmentService(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType) {
+        List<String> orderIdList =  new ArrayList<>();
+        Return result = new Return();
+        try {
+            for(int i = 0; i<excuteCount; i++){
+                String orderId = Long.toString(System.currentTimeMillis() + i);
+                Calendar calendar = Calendar.getInstance();
+
+                OdOrders odOrders = new OdOrders();
+                odOrders.setAddress("北京西城区内环到二环里右安门内大街万博苑小区1号楼6单元302");
+                odOrders.setId(0);
+                odOrders.setState(7);
+                odOrders.setStatus(0);
+                odOrders.setWeight(new BigDecimal("57.6000"));
+                odOrders.setJyn(0);
+                odOrders.setPartnerid("604");
+                odOrders.setPrintflag(1);
+                odOrders.setCky2(6);
+                odOrders.setStoreId(Integer.valueOf(routeRule));
+                odOrders.setStoreid(Integer.valueOf(routeRule));
+                odOrders.setUprovince(1);
+                odOrders.setUcity(2801);
+                odOrders.setUcounty(2827);
+                odOrders.setCustomerName("宋斌");
+                odOrders.setMobile("13911134886");
+                odOrders.setPayment(4);
+                odOrders.setFactPrice(new BigDecimal("95.7000"));
+                odOrders.setPaysureDate(Calendar.getInstance());
+                odOrders.setDi(70);
+                odOrders.setYun(BigDecimal.ZERO);
+                odOrders.setOrderId(orderId);
+                odOrders.setOrderid(orderId);
+                odOrders.setYouhui(BigDecimal.TEN);
+                odOrders.setCreateDate(calendar);
+                odOrders.setYn(0);
+                odOrders.setPrintx(0);
+                odOrders.setTotalPrice(new BigDecimal("101.70"));
+                odOrders.setMemberId("rebeccawednesday");
+                odOrders.setState2(9);
+                odOrders.setRemark("");
+                odOrders.setPhone("");
+                odOrders.setEmail("");
+                odOrders.setZip("");
+                odOrders.setIsJdShip(1);
+                odOrders.setZiti(0);
+                odOrders.setQlShipNo("JDX000155638868");
+                odOrders.setCreateTime(calendar);
+                odOrders.setVolume(new BigDecimal("92078.0000"));
+                odOrders.setPrintInfoFlag(0);
+                odOrders.setUpdateDate(calendar);
+                odOrders.setLocNo("");
+                odOrders.setSheetType(0);
+                odOrders.setSndDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                odOrders.setSndTime("");
+
+                List<OdOrderDetail> odOrderDetailList  = new ArrayList<>();
+                String [] goodsArr = goodNo.split(",");
+                for (int j =0; j< goodsArr.length; j++) {
+                    OdOrderDetail odOrderDetail = new OdOrderDetail();
+                    odOrderDetail.setId(0);
+                    odOrderDetail.setPrice(33.90d);
+                    odOrderDetail.setProductId(goodsArr[j]);
+                    odOrderDetail.setQuantity(new BigDecimal(goodNum.split(",")[j]));
+                    odOrderDetail.setProductName("swagger测试");
+                    odOrderDetail.setOrderid(orderId);
+                    odOrderDetail.setSerialId(1);
+                    odOrderDetail.setIsVMI(0);
+                    odOrderDetailList.add(odOrderDetail);
+                }
+                odOrders.setOdOrderDetailList(odOrderDetailList);
+
+                Map<String,Object> distributionInfo = new HashMap<>();
+                distributionInfo.put("originalDmsName","北京马驹桥分拣中心");
+                distributionInfo.put("originalDmsId",910);
+                distributionInfo.put("destinationDmsName","北京马驹桥分拣中心");
+                distributionInfo.put("destinationDmsId",910);
+                distributionInfo.put("originalCrossCode","101");
+                distributionInfo.put("originalTabletrolleyCode","101");
+                distributionInfo.put("destinationCrossCode","101");
+                distributionInfo.put("destinationTabletrolleyCode","101");
+                distributionInfo.put("isZiTi",0);
+                distributionInfo.put("printSiteName","打印站点名称");
+                distributionInfo.put("printAddress","打印地址");
+
+                Map<String,Object> extendInfo = new HashMap<>();
+                extendInfo.put("distributionInfo",distributionInfo);
+                odOrders.setExtendInfo(extendInfo);
+
+                OdPrintInfo odPrintInfo = new OdPrintInfo();
+                odPrintInfo.setId(0);
+                odPrintInfo.setType(1);
+                odPrintInfo.setCky2(6);
+                odPrintInfo.setOrderid(orderId);
+                odPrintInfo.setPrintInfo(getPrintInfo(odOrders,distributionInfo));
+                odPrintInfo.setInvoiceDetail("");
+                odOrders.setOdPrintInfo(odPrintInfo);
+
+                result = XmlUtil.getStringResponse(bizType,odOrders);
+                if("1".equals(result.getResultCode())){
+                    orderIdList.add(orderId);
+                }
+            }
+        } catch (Exception e) {
+            log.error("退供出库接口异常：",e);
+            return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
+        }
+        if(CollectionUtils.isEmpty(orderIdList)){
+            return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
+        }
+        return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
+    }
+
+    @Override
+    public ResultModel receivedScrapShipment(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType) {
+        List<String> orderIdList =  new ArrayList<>();
+        Return result = new Return();
+        try {
+            for(int i = 0; i<excuteCount; i++){
+                String id = Long.toString(System.currentTimeMillis() + i);
+
+                ScrapShipment scrapShipment = new ScrapShipment();
+                scrapShipment.setId(id);
+                scrapShipment.setRid("6");
+                scrapShipment.setSid(routeRule);
+                scrapShipment.setIsShortage("0");
+                scrapShipment.setAddTime(new Date());
+                scrapShipment.setApplicant("swagger测试");
+
+                List<ScrapWare> scrapWareList = new ArrayList<>();
+                String [] goodsArr = goodNo.split(",");
+                for (int j =0; j< goodsArr.length; j++) {
+                    ScrapWare scrapWare = new ScrapWare();
+                    scrapWare.setWid(goodsArr[j]);
+                    scrapWare.setWname("swagger测试");
+                    Example example = new Example(BsItembase.class);
+                    example.createCriteria().andEqualTo("goodsNo",goodsArr[j]);
+                    List<BsItembase> list  = goodMapper.selectByExample(example);
+                    if(!CollectionUtils.isEmpty(list)){
+                        scrapWare.setWname(list.get(0).getName());
+                    }
+                    scrapWare.setNum("10");
+                    scrapWareList.add(scrapWare);
+                }
+                scrapShipment.setScrapWareList(scrapWareList);
+
+                result = XmlUtil.getStringResponse(bizType,XmlUtil.convertToXml(scrapShipment));
+                if("1".equals(result.getResultCode())){
+                    orderIdList.add(id);
+                }
+            }
+        } catch (Exception e) {
+            log.error("报废出库接口异常：",e);
+            return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
+        }
+        if(CollectionUtils.isEmpty(orderIdList)){
+            return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
+        }
+        return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
+    }
+
+    @Override
+    public ResultModel receiveOrder(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType) {
+        return null;
     }
 
     private String getPrintInfo(OdOrders odOrders, Map<String, Object> distributionInfo) throws Exception {

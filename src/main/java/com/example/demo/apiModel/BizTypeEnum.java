@@ -6,6 +6,9 @@ package com.example.demo.apiModel;
 public enum BizTypeEnum {
     TEST("querySkuAmountByTaskNoAndStatus", "uuid","360BUY.WMS3.WS.CALLCODE.wave","http://merge.wms5.jd.test/pickingplan/services/waveWS"),
     DOWNLOAD_SHIPMENT("downLoadShipment", "uuid","360BUY.WMS3.WS.CALLCODE.wave","http://merge.wms5.jd.test/pickingplan/services/waveWS"),
+    OWNER_SHIPMENT("receivedOwnerShipmentService", "uuid","360BUY.WMS3.WS.CALLCODE.wave","http://merge.wms5.jd.test/pickingplan/services/waveWS"),
+    SCRAP_SHIPMENT("receivedScrapShipment", "uuid","360BUY.WMS3.WS.CALLCODE.wave","http://merge.wms5.jd.test/pickingplan/services/waveWS"),
+    RECEIVE_SHIPMENT("receiveOrder", "uuid","360BUY.WMS3.WS.CALLCODE.wave","http://merge.wms5.jd.test/pickingplan/services/waveWS"),
     ASN_DATA_IMPORT("wms_ib_receScheduling_asnDataImport", "uuid","360BUY.WMS3.WS.CALLCODE.100","http://merge.wms5.jd.test/inbound/services/receScheduling"),
     IMPORT_RECEIVING_TASK("wms_receiving_Itface_importReceivingTask", "uuid","360BUY.WMS3.WS.CALLCODE.100","http://merge.wms5.jd.test/inbound/services/receivingWSSoap"),
     ISSUED_ORDERS("wms_receiving_orderIdIssuedFromDmsService_issuedOrders", "uuid","360BUY.WMS3.WS.CALLCODE.100","http://merge.wms5.jd.test/inbound/services/receivingWSSoap"),

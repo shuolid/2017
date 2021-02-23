@@ -24,7 +24,7 @@ public class OutController {
     @PostMapping("/downLoadShipment")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "routeRule", paramType = "query", allowableValues = "55,980", defaultValue = "55"),
-        @ApiImplicitParam(name = "sendPay", paramType = "query", allowableValues = "普通C单,直通车订单", defaultValue = "普通C单")
+        @ApiImplicitParam(name = "sendPay", paramType = "query", allowableValues = "普通C单,直通车订单,退供出库,报废出库,内配出库,", defaultValue = "普通C单")
     })
     @ApiOperation(value = "出库接单", notes = "多商品，多个，多次出库接单")
     public ResultModel downLoadShipment(
@@ -33,6 +33,36 @@ public class OutController {
             @ApiParam(value = "接口执行次数",required = true, example = "1") @RequestParam(name = "excuteCount") Integer excuteCount,
             @RequestParam("sendPay")String sendPay,
             @RequestParam("routeRule")String routeRule){
+        if("退供出库".equals(sendPay)){
+            BizType bizType = BizType.builder()
+                    .bizType(BizTypeEnum.OWNER_SHIPMENT.getBizType())
+                    .uuid(BizTypeEnum.OWNER_SHIPMENT.getUuid())
+                    .callCode(BizTypeEnum.OWNER_SHIPMENT.getCallCode())
+                    .url(UrlEnum.getEnumByKey(routeRule).getUrl())
+                    .routeRule(routeRule)
+                    .build();
+            return outService.receivedOwnerShipmentService(goodNo, goodNum, excuteCount, routeRule, bizType);
+        }
+        if("报废出库".equals(sendPay)){
+            BizType bizType = BizType.builder()
+                    .bizType(BizTypeEnum.SCRAP_SHIPMENT.getBizType())
+                    .uuid(BizTypeEnum.SCRAP_SHIPMENT.getUuid())
+                    .callCode(BizTypeEnum.SCRAP_SHIPMENT.getCallCode())
+                    .url(UrlEnum.getEnumByKey(routeRule).getUrl())
+                    .routeRule(routeRule)
+                    .build();
+            return outService.receivedScrapShipment(goodNo, goodNum, excuteCount, routeRule, bizType);
+        }
+        if("内配出库".equals(sendPay)){
+            BizType bizType = BizType.builder()
+                    .bizType(BizTypeEnum.RECEIVE_SHIPMENT.getBizType())
+                    .uuid(BizTypeEnum.RECEIVE_SHIPMENT.getUuid())
+                    .callCode(BizTypeEnum.RECEIVE_SHIPMENT.getCallCode())
+                    .url(UrlEnum.getEnumByKey(routeRule).getUrl())
+                    .routeRule(routeRule)
+                    .build();
+            return outService.receiveOrder(goodNo, goodNum, excuteCount, routeRule, bizType);
+        }
 
         BizType bizType = BizType.builder()
                 .bizType(BizTypeEnum.DOWNLOAD_SHIPMENT.getBizType())
@@ -41,7 +71,6 @@ public class OutController {
                 .url(UrlEnum.getEnumByKey(routeRule).getUrl())
                 .routeRule(routeRule)
                 .build();
-
         return outService.downLoadShipment(goodNo, goodNum, excuteCount, SendPayEnum.getEnumByName(sendPay).getValue(), routeRule, bizType);
     }
 
