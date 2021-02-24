@@ -4,6 +4,8 @@ import com.example.demo.BizType;
 import com.example.demo.apiModel.ResultModel;
 import com.example.demo.apiModel.Return;
 import com.example.demo.apiModel.downLoadShipment.*;
+import com.example.demo.apiModel.receiveOrder.ReceiveOrder;
+import com.example.demo.apiModel.receivedOwnerShipment.ReturnsOrder;
 import com.example.demo.apiModel.receivedScrapShipment.ScrapShipment;
 import com.example.demo.apiModel.receivedScrapShipment.ScrapWare;
 import com.example.demo.entity.BsItembase;
@@ -101,6 +103,12 @@ public class OutServiceImpl implements OutService {
                     odOrderDetail.setProductId(goodsArr[j]);
                     odOrderDetail.setQuantity(new BigDecimal(goodNum.split(",")[j]));
                     odOrderDetail.setProductName("swagger测试");
+                    Example example = new Example(BsItembase.class);
+                    example.createCriteria().andEqualTo("goodsNo",goodsArr[j]);
+                    List<BsItembase> list  = goodMapper.selectByExample(example);
+                    if(!CollectionUtils.isEmpty(list)){
+                        odOrderDetail.setProductName(list.get(0).getName());
+                    }
                     odOrderDetail.setOrderid(orderId);
                     odOrderDetail.setSerialId(1);
                     odOrderDetail.setIsVMI(0);
@@ -168,101 +176,56 @@ public class OutServiceImpl implements OutService {
         Return result = new Return();
         try {
             for(int i = 0; i<excuteCount; i++){
-                String orderId = Long.toString(System.currentTimeMillis() + i);
-                Calendar calendar = Calendar.getInstance();
+                String id = Long.toString(System.currentTimeMillis() + i);
 
-                OdOrders odOrders = new OdOrders();
-                odOrders.setAddress("北京西城区内环到二环里右安门内大街万博苑小区1号楼6单元302");
-                odOrders.setId(0);
-                odOrders.setState(7);
-                odOrders.setStatus(0);
-                odOrders.setWeight(new BigDecimal("57.6000"));
-                odOrders.setJyn(0);
-                odOrders.setPartnerid("604");
-                odOrders.setPrintflag(1);
-                odOrders.setCky2(6);
-                odOrders.setStoreId(Integer.valueOf(routeRule));
-                odOrders.setStoreid(Integer.valueOf(routeRule));
-                odOrders.setUprovince(1);
-                odOrders.setUcity(2801);
-                odOrders.setUcounty(2827);
-                odOrders.setCustomerName("宋斌");
-                odOrders.setMobile("13911134886");
-                odOrders.setPayment(4);
-                odOrders.setFactPrice(new BigDecimal("95.7000"));
-                odOrders.setPaysureDate(Calendar.getInstance());
-                odOrders.setDi(70);
-                odOrders.setYun(BigDecimal.ZERO);
-                odOrders.setOrderId(orderId);
-                odOrders.setOrderid(orderId);
-                odOrders.setYouhui(BigDecimal.TEN);
-                odOrders.setCreateDate(calendar);
-                odOrders.setYn(0);
-                odOrders.setPrintx(0);
-                odOrders.setTotalPrice(new BigDecimal("101.70"));
-                odOrders.setMemberId("rebeccawednesday");
-                odOrders.setState2(9);
-                odOrders.setRemark("");
-                odOrders.setPhone("");
-                odOrders.setEmail("");
-                odOrders.setZip("");
-                odOrders.setIsJdShip(1);
-                odOrders.setZiti(0);
-                odOrders.setQlShipNo("JDX000155638868");
-                odOrders.setCreateTime(calendar);
-                odOrders.setVolume(new BigDecimal("92078.0000"));
-                odOrders.setPrintInfoFlag(0);
-                odOrders.setUpdateDate(calendar);
-                odOrders.setLocNo("");
-                odOrders.setSheetType(0);
-                odOrders.setSndDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                odOrders.setSndTime("");
+                ReturnsOrder returnsOrder = new ReturnsOrder();
+                returnsOrder.setId(id);
+                returnsOrder.setProviderCode("POP_58724");
+                returnsOrder.setProviderName("山姆店测试公司");
+                returnsOrder.setReturnCompanyID("6");
+                returnsOrder.setOperatorName("swagger测试");
+                returnsOrder.setTransportType("2");
+                returnsOrder.setIsScraped("2");
+                returnsOrder.setBanlanceType("3");
+                returnsOrder.setReturnsMoney("800");
+                returnsOrder.setCarriage("0");
+                returnsOrder.setTotalProductNum("1");
+                returnsOrder.setPickSpot("0");
+                returnsOrder.setReceiveCompanyID("6");
+                returnsOrder.setIsLocalReturn("Y");
+                returnsOrder.setReturnStockNo(routeRule);
+                returnsOrder.setReturnOrgNo("6");
+                returnsOrder.setReceiveStockNo(routeRule);
+                returnsOrder.setReceiveOrgNo("6");
+                returnsOrder.setSelfSource("6");
+                returnsOrder.setReceiveAddress("天津天津市滨海新区新北路4668号创新创业园31号楼5层");
+                returnsOrder.setReceiverCell("15901421383");
+                returnsOrder.setInboundNo("88888888");
+                returnsOrder.setReturnsOrderType("0");
+                returnsOrder.setReturnstype("2");
 
-                List<OdOrderDetail> odOrderDetailList  = new ArrayList<>();
+                List<ReturnsOrder.RetrunProduct> retrunProductList = new ArrayList<>();
                 String [] goodsArr = goodNo.split(",");
                 for (int j =0; j< goodsArr.length; j++) {
-                    OdOrderDetail odOrderDetail = new OdOrderDetail();
-                    odOrderDetail.setId(0);
-                    odOrderDetail.setPrice(33.90d);
-                    odOrderDetail.setProductId(goodsArr[j]);
-                    odOrderDetail.setQuantity(new BigDecimal(goodNum.split(",")[j]));
-                    odOrderDetail.setProductName("swagger测试");
-                    odOrderDetail.setOrderid(orderId);
-                    odOrderDetail.setSerialId(1);
-                    odOrderDetail.setIsVMI(0);
-                    odOrderDetailList.add(odOrderDetail);
+                    ReturnsOrder.RetrunProduct retrunProduct = new ReturnsOrder.RetrunProduct();
+                    retrunProduct.setProductID(goodsArr[j]);
+                    retrunProduct.setProductName("swagger测试");
+                    Example example = new Example(BsItembase.class);
+                    example.createCriteria().andEqualTo("goodsNo",goodsArr[j]);
+                    List<BsItembase> list  = goodMapper.selectByExample(example);
+                    if(!CollectionUtils.isEmpty(list)){
+                        retrunProduct.setProductName(list.get(0).getName());
+                    }
+                    retrunProduct.setReturnsNum(goodNum.split(",")[j]);
+                    retrunProduct.setReturnsPrice("39.9");
+                    retrunProduct.setSpecNo("12345");
+                    retrunProductList.add(retrunProduct);
                 }
-                odOrders.setOdOrderDetailList(odOrderDetailList);
+                returnsOrder.setRetrunProductList(retrunProductList);
 
-                Map<String,Object> distributionInfo = new HashMap<>();
-                distributionInfo.put("originalDmsName","北京马驹桥分拣中心");
-                distributionInfo.put("originalDmsId",910);
-                distributionInfo.put("destinationDmsName","北京马驹桥分拣中心");
-                distributionInfo.put("destinationDmsId",910);
-                distributionInfo.put("originalCrossCode","101");
-                distributionInfo.put("originalTabletrolleyCode","101");
-                distributionInfo.put("destinationCrossCode","101");
-                distributionInfo.put("destinationTabletrolleyCode","101");
-                distributionInfo.put("isZiTi",0);
-                distributionInfo.put("printSiteName","打印站点名称");
-                distributionInfo.put("printAddress","打印地址");
-
-                Map<String,Object> extendInfo = new HashMap<>();
-                extendInfo.put("distributionInfo",distributionInfo);
-                odOrders.setExtendInfo(extendInfo);
-
-                OdPrintInfo odPrintInfo = new OdPrintInfo();
-                odPrintInfo.setId(0);
-                odPrintInfo.setType(1);
-                odPrintInfo.setCky2(6);
-                odPrintInfo.setOrderid(orderId);
-                odPrintInfo.setPrintInfo(getPrintInfo(odOrders,distributionInfo));
-                odPrintInfo.setInvoiceDetail("");
-                odOrders.setOdPrintInfo(odPrintInfo);
-
-                result = XmlUtil.getStringResponse(bizType,odOrders);
+                result = XmlUtil.getStringResponse(bizType,XmlUtil.convertToXml(returnsOrder));
                 if("1".equals(result.getResultCode())){
-                    orderIdList.add(orderId);
+                    orderIdList.add(id);
                 }
             }
         } catch (Exception e) {
@@ -303,7 +266,7 @@ public class OutServiceImpl implements OutService {
                     if(!CollectionUtils.isEmpty(list)){
                         scrapWare.setWname(list.get(0).getName());
                     }
-                    scrapWare.setNum("10");
+                    scrapWare.setNum(goodNum.split(",")[j]);
                     scrapWareList.add(scrapWare);
                 }
                 scrapShipment.setScrapWareList(scrapWareList);
@@ -325,7 +288,59 @@ public class OutServiceImpl implements OutService {
 
     @Override
     public ResultModel receiveOrder(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType) {
-        return null;
+        List<String> orderIdList =  new ArrayList<>();
+        Return result = new Return();
+        try {
+            for(int i = 0; i<excuteCount; i++){
+                String id = Long.toString(System.currentTimeMillis() + i);
+
+                ReceiveOrder receiveOrder = new ReceiveOrder();
+                receiveOrder.setTaskId(UUID.randomUUID().toString());
+                receiveOrder.setRfid(id);
+                receiveOrder.setFrom("6");
+                receiveOrder.setTo("6");
+                receiveOrder.setStartSid(routeRule);
+                receiveOrder.setToSid("55");
+                if("55".equals(routeRule)){
+                    receiveOrder.setToSid("98");
+                }
+                receiveOrder.setOperatorName("swagger测试");
+                receiveOrder.setYwtype("P");
+                receiveOrder.setCrossDockingType("0");
+                receiveOrder.setVendorType("-1");
+                receiveOrder.setVendorId("-1");
+
+                List<ReceiveOrder.ChuordersBase> chuordersBaseList = new ArrayList<>();
+                String [] goodsArr = goodNo.split(",");
+                for (int j =0; j< goodsArr.length; j++) {
+                    ReceiveOrder.ChuordersBase chuordersBase = new ReceiveOrder.ChuordersBase();
+                    chuordersBase.setWareid(goodsArr[j]);
+                    chuordersBase.setWname("swagger测试");
+                    Example example = new Example(BsItembase.class);
+                    example.createCriteria().andEqualTo("goodsNo",goodsArr[j]);
+                    List<BsItembase> list  = goodMapper.selectByExample(example);
+                    if(!CollectionUtils.isEmpty(list)){
+                        chuordersBase.setWname(list.get(0).getName());
+                    }
+                    chuordersBase.setNumb(goodNum.split(",")[j]);
+                    chuordersBase.setProductLevel("1");
+                    chuordersBaseList.add(chuordersBase);
+                }
+                receiveOrder.setChuordersBaseList(chuordersBaseList);
+
+                result = XmlUtil.getStringResponse(bizType,XmlUtil.convertToXml(receiveOrder));
+                if("1".equals(result.getResultCode())){
+                    orderIdList.add(id);
+                }
+            }
+        } catch (Exception e) {
+            log.error("内配出库接口异常：",e);
+            return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
+        }
+        if(CollectionUtils.isEmpty(orderIdList)){
+            return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
+        }
+        return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
     }
 
     private String getPrintInfo(OdOrders odOrders, Map<String, Object> distributionInfo) throws Exception {

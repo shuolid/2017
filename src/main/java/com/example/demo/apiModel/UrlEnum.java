@@ -4,8 +4,8 @@ package com.example.demo.apiModel;
 
 @SuppressWarnings("unused")
 public enum UrlEnum {
-    MERGE_URL("55", "http://merge.wms5.jd.test/pickingplan/services/waveWS"),
-    PRE_URL("980", "http://wms5bjtest1.jd.com/pickingplan/services/waveWS");
+    MERGE_URL("55", "http://merge.wms5.jd.test"),
+    PRE_URL("980", "http://wms5bjtest1.jd.com");
 
 
     private String key;

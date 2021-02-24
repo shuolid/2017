@@ -38,7 +38,7 @@ public class OutController {
                     .bizType(BizTypeEnum.OWNER_SHIPMENT.getBizType())
                     .uuid(BizTypeEnum.OWNER_SHIPMENT.getUuid())
                     .callCode(BizTypeEnum.OWNER_SHIPMENT.getCallCode())
-                    .url(UrlEnum.getEnumByKey(routeRule).getUrl())
+                    .url(UrlEnum.getEnumByKey(routeRule).getUrl() + "/pickingplan/services/waveWS")
                     .routeRule(routeRule)
                     .build();
             return outService.receivedOwnerShipmentService(goodNo, goodNum, excuteCount, routeRule, bizType);
@@ -48,7 +48,7 @@ public class OutController {
                     .bizType(BizTypeEnum.SCRAP_SHIPMENT.getBizType())
                     .uuid(BizTypeEnum.SCRAP_SHIPMENT.getUuid())
                     .callCode(BizTypeEnum.SCRAP_SHIPMENT.getCallCode())
-                    .url(UrlEnum.getEnumByKey(routeRule).getUrl())
+                    .url(UrlEnum.getEnumByKey(routeRule).getUrl() + "/pickingplan/services/waveWS")
                     .routeRule(routeRule)
                     .build();
             return outService.receivedScrapShipment(goodNo, goodNum, excuteCount, routeRule, bizType);
@@ -58,7 +58,7 @@ public class OutController {
                     .bizType(BizTypeEnum.RECEIVE_SHIPMENT.getBizType())
                     .uuid(BizTypeEnum.RECEIVE_SHIPMENT.getUuid())
                     .callCode(BizTypeEnum.RECEIVE_SHIPMENT.getCallCode())
-                    .url(UrlEnum.getEnumByKey(routeRule).getUrl())
+                    .url(UrlEnum.getEnumByKey(routeRule).getUrl() + "/inner/services/obInternalReceiveWebServiceSoap")
                     .routeRule(routeRule)
                     .build();
             return outService.receiveOrder(goodNo, goodNum, excuteCount, routeRule, bizType);
@@ -68,7 +68,7 @@ public class OutController {
                 .bizType(BizTypeEnum.DOWNLOAD_SHIPMENT.getBizType())
                 .uuid(BizTypeEnum.DOWNLOAD_SHIPMENT.getUuid())
                 .callCode(BizTypeEnum.DOWNLOAD_SHIPMENT.getCallCode())
-                .url(UrlEnum.getEnumByKey(routeRule).getUrl())
+                .url(UrlEnum.getEnumByKey(routeRule).getUrl() + "/pickingplan/services/waveWS")
                 .routeRule(routeRule)
                 .build();
         return outService.downLoadShipment(goodNo, goodNum, excuteCount, SendPayEnum.getEnumByName(sendPay).getValue(), routeRule, bizType);
