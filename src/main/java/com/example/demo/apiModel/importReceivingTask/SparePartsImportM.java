@@ -15,6 +15,8 @@ import java.util.List;
 @XmlRootElement(name = "wms_purchase_m")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SparePartsImportM implements Serializable{
+    @XmlElement(name="documentId")
+    private String documentId;
     @XmlElementWrapper(name="Wms_purchase_ds")
     @XmlElement(name="wms_purchase_d")
     private List<SparePartsImportD> sparePartsImportDList;
@@ -259,5 +261,13 @@ public class SparePartsImportM implements Serializable{
 
     public void setWarehouseNo(String warehouseNo) {
         this.warehouseNo = warehouseNo;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 }

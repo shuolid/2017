@@ -80,12 +80,15 @@ public class InServiceImpl implements InService {
                     parkAsnD.setUnitPackage(1);
 
                     //渠道
-                    List<SkuProfitLossInfo> skuProfitLossInfoList = new ArrayList<>();
-                    SkuProfitLossInfo skuProfitLossInfo  =  new SkuProfitLossInfo();
-                    skuProfitLossInfo.setProfitLossId(profitLossId);
-                    skuProfitLossInfo.setQty(profitLossQty);
-                    skuProfitLossInfoList.add(skuProfitLossInfo);
-                    parkAsnD.setSkuProfitLossInfoList(skuProfitLossInfoList);
+                    if(!"0".equals(profitLossId)){
+                        List<SkuProfitLossInfo> skuProfitLossInfoList = new ArrayList<>();
+                        SkuProfitLossInfo skuProfitLossInfo  =  new SkuProfitLossInfo();
+                        skuProfitLossInfo.setProfitLossId(profitLossId);
+                        skuProfitLossInfo.setQty(profitLossQty);
+                        skuProfitLossInfoList.add(skuProfitLossInfo);
+                        parkAsnD.setSkuProfitLossInfoList(skuProfitLossInfoList);
+                    }
+
 
 
                     parkAsnDList.add(parkAsnD);
@@ -133,13 +136,15 @@ public class InServiceImpl implements InService {
                 twiceSerialFlag.setValue("");
                 parkAsnExpendList.add(twiceSerialFlag);
 
-                ParkAsnExpend channelType = new ParkAsnExpend();
-                channelType.setKey("channelType");
-                channelType.setValue("2");
-                if("B单".equals(profitLossType)){
-                    channelType.setValue("1");
+                if(!"0".equals(profitLossId)){
+                    ParkAsnExpend channelType = new ParkAsnExpend();
+                    channelType.setKey("channelType");
+                    channelType.setValue("2");
+                    if("B单".equals(profitLossType)){
+                        channelType.setValue("1");
+                    }
+                    parkAsnExpendList.add(channelType);
                 }
-                parkAsnExpendList.add(channelType);
 
                 parkAsnM.setParkAsnExpendList(parkAsnExpendList);
 
@@ -180,6 +185,12 @@ public class InServiceImpl implements InService {
                 sparePartsImportM.setWareNo(routeRule);
                 sparePartsImportM.setErpWareNo(routeRule);
                 sparePartsImportM.setWmsTarget("6,6," + routeRule);
+                if(!"0".equals(profitLossId)){
+                    sparePartsImportM.setDocumentId("0");
+                    if("B单".equals(profitLossType)){
+                        sparePartsImportM.setDocumentId("1");
+                    }
+                }
 
                 List<SparePartsImportD> sparePartsImportDList = new ArrayList<>();
                 String [] goodsArr = goodNo.split(",");
@@ -194,6 +205,9 @@ public class InServiceImpl implements InService {
                     sparePartsImportD.setSerialId("1");
                     sparePartsImportD.setSupplierNo("lsbjgdgc");
                     //渠道
+                    if(!"0".equals(profitLossId)){
+                        sparePartsImportD.setChannelId(profitLossId);
+                    }
 
                     sparePartsImportDList.add(sparePartsImportD);
                 }

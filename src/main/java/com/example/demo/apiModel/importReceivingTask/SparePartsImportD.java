@@ -16,6 +16,8 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SparePartsImportD implements Serializable {
+    @XmlElement(name="channelId")
+    private String channelId;
     @XmlElement(name="SEQNO")
     private String seqNo;
     @XmlElement(name="Sheetid")
@@ -117,6 +119,15 @@ public class SparePartsImportD implements Serializable {
 
     public void setProductLevel(String productLevel) {
         this.productLevel = productLevel;
+    }
+
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 
     @Override
