@@ -24,13 +24,14 @@ public class OutController {
     @PostMapping("/downLoadShipment")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "routeRule", paramType = "query", allowableValues = "55,980", defaultValue = "55"),
-        @ApiImplicitParam(name = "sendPay", paramType = "query", allowableValues = "普通C单,直通车订单,退供出库,报废出库,内配出库,", defaultValue = "普通C单")
+        @ApiImplicitParam(name = "sendPay", paramType = "query", allowableValues = "普通C单,集采B单,直通车订单,退供出库,报废出库,内配出库,", defaultValue = "普通C单")
     })
     @ApiOperation(value = "出库接单", notes = "多商品，多个，多次出库接单")
     public ResultModel downLoadShipment(
             @ApiParam(value = "商品编号",required = true, defaultValue = "100391") @RequestParam(name = "goodId") String goodNo,
             @ApiParam(value = "商品数量",required = true, defaultValue = "1") @RequestParam(name = "goodNum") String goodNum,
             @ApiParam(value = "接口执行次数",required = true, example = "1") @RequestParam(name = "excuteCount") Integer excuteCount,
+            @ApiParam(value = "渠道id",required = true, example = "1") @RequestParam(name = "profitLossId") String profitLossId,
             @RequestParam("sendPay")String sendPay,
             @RequestParam("routeRule")String routeRule){
         if("退供出库".equals(sendPay)){
@@ -41,7 +42,7 @@ public class OutController {
                     .url(UrlEnum.getEnumByKey(routeRule).getUrl() + "/pickingplan/services/waveWS")
                     .routeRule(routeRule)
                     .build();
-            return outService.receivedOwnerShipmentService(goodNo, goodNum, excuteCount, routeRule, bizType);
+            return outService.receivedOwnerShipmentService(goodNo, goodNum, excuteCount, routeRule, bizType, profitLossId);
         }
         if("报废出库".equals(sendPay)){
             BizType bizType = BizType.builder()
@@ -51,7 +52,7 @@ public class OutController {
                     .url(UrlEnum.getEnumByKey(routeRule).getUrl() + "/pickingplan/services/waveWS")
                     .routeRule(routeRule)
                     .build();
-            return outService.receivedScrapShipment(goodNo, goodNum, excuteCount, routeRule, bizType);
+            return outService.receivedScrapShipment(goodNo, goodNum, excuteCount, routeRule, bizType,profitLossId);
         }
         if("内配出库".equals(sendPay)){
             BizType bizType = BizType.builder()
@@ -61,7 +62,7 @@ public class OutController {
                     .url(UrlEnum.getEnumByKey(routeRule).getUrl() + "/inner/services/obInternalReceiveWebServiceSoap")
                     .routeRule(routeRule)
                     .build();
-            return outService.receiveOrder(goodNo, goodNum, excuteCount, routeRule, bizType);
+            return outService.receiveOrder(goodNo, goodNum, excuteCount, routeRule, bizType,profitLossId);
         }
 
         BizType bizType = BizType.builder()
@@ -71,7 +72,7 @@ public class OutController {
                 .url(UrlEnum.getEnumByKey(routeRule).getUrl() + "/pickingplan/services/waveWS")
                 .routeRule(routeRule)
                 .build();
-        return outService.downLoadShipment(goodNo, goodNum, excuteCount, SendPayEnum.getEnumByName(sendPay).getValue(), routeRule, bizType);
+        return outService.downLoadShipment(goodNo, goodNum, excuteCount, SendPayEnum.getEnumByName(sendPay).getValue(), routeRule, bizType,profitLossId);
     }
 
     @PostMapping("/packageSwitch")

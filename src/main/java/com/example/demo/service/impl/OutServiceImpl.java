@@ -38,7 +38,7 @@ public class OutServiceImpl implements OutService {
     private GoodMapper goodMapper;
 
     @Override
-    public ResultModel downLoadShipment(String goodNo, String goodNum, Integer excuteCount, String sendPay, String routeRule, BizType bizType) {
+    public ResultModel downLoadShipment(String goodNo, String goodNum, Integer excuteCount, String sendPay, String routeRule, BizType bizType, String profitLossId) {
         List<String> orderIdList =  new ArrayList<>();
         Return result = new Return();
         try {
@@ -112,6 +112,12 @@ public class OutServiceImpl implements OutService {
                     odOrderDetail.setOrderid(orderId);
                     odOrderDetail.setSerialId(1);
                     odOrderDetail.setIsVMI(0);
+
+                    if(!"0".equals(profitLossId)){
+                        Map<String, String> extTagsMap = new HashMap<>();
+                        extTagsMap.put("profitChannelId",profitLossId);
+                        odOrderDetail.setExtTagsMap(extTagsMap);
+                    }
                     odOrderDetailList.add(odOrderDetail);
                 }
                 odOrders.setOdOrderDetailList(odOrderDetailList);
@@ -171,7 +177,7 @@ public class OutServiceImpl implements OutService {
     }
 
     @Override
-    public ResultModel receivedOwnerShipmentService(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType) {
+    public ResultModel receivedOwnerShipmentService(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType, String profitLossId) {
         List<String> orderIdList =  new ArrayList<>();
         Return result = new Return();
         try {
@@ -203,6 +209,10 @@ public class OutServiceImpl implements OutService {
                 returnsOrder.setInboundNo("88888888");
                 returnsOrder.setReturnsOrderType("0");
                 returnsOrder.setReturnstype("2");
+                //渠道
+                if(!"0".equals(profitLossId)){
+                    returnsOrder.setProfitLossId(profitLossId);
+                }
 
                 List<ReturnsOrder.RetrunProduct> retrunProductList = new ArrayList<>();
                 String [] goodsArr = goodNo.split(",");
@@ -239,7 +249,7 @@ public class OutServiceImpl implements OutService {
     }
 
     @Override
-    public ResultModel receivedScrapShipment(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType) {
+    public ResultModel receivedScrapShipment(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType, String profitLossId) {
         List<String> orderIdList =  new ArrayList<>();
         Return result = new Return();
         try {
@@ -247,6 +257,10 @@ public class OutServiceImpl implements OutService {
                 String id = Long.toString(System.currentTimeMillis() + i);
 
                 ScrapShipment scrapShipment = new ScrapShipment();
+                //渠道
+                if(!"0".equals(profitLossId)){
+                    scrapShipment.setProfitLossId(profitLossId);
+                }
                 scrapShipment.setId(id);
                 scrapShipment.setRid("6");
                 scrapShipment.setSid(routeRule);
@@ -287,7 +301,7 @@ public class OutServiceImpl implements OutService {
     }
 
     @Override
-    public ResultModel receiveOrder(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType) {
+    public ResultModel receiveOrder(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType, String profitLossId) {
         List<String> orderIdList =  new ArrayList<>();
         Return result = new Return();
         try {

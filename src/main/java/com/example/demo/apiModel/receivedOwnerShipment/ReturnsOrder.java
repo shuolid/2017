@@ -9,6 +9,9 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
 public class ReturnsOrder {
+    @XmlElement(name="ProfitLossId")
+    private String profitLossId;
+
     @XmlElement(name="ID")
     private String id;
 
