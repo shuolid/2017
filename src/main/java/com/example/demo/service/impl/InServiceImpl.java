@@ -7,6 +7,8 @@ import com.example.demo.apiModel.asnDataImport.ParkAsnD;
 import com.example.demo.apiModel.asnDataImport.ParkAsnExpend;
 import com.example.demo.apiModel.asnDataImport.ParkAsnM;
 import com.example.demo.apiModel.asnDataImport.SkuProfitLossInfo;
+import com.example.demo.apiModel.caseInfo.BoxDetail;
+import com.example.demo.apiModel.caseInfo.Boxware;
 import com.example.demo.apiModel.importReceivingTask.SparePartsImportD;
 import com.example.demo.apiModel.importReceivingTask.SparePartsImportM;
 import com.example.demo.apiModel.issuedOrders.ProductRequest;
@@ -279,6 +281,68 @@ public class InServiceImpl implements InService {
             }
         } catch (Exception e) {
             log.error("客户退货单接口异常：",e);
+            return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
+        }
+        if(CollectionUtils.isEmpty(orderIdList)){
+            return ResultModel.builder().code(1).message(result.getResultMessage()).data(orderIdList).build();
+        }
+        return ResultModel.builder().code(0).message(result.getResultMessage()).data(orderIdList).build();
+    }
+
+    @Override
+    public ResultModel downLoadNewReceivedNoAndCaseInfo(String goodNo, String goodNum, Integer excuteCount, String routeRule, BizType bizType, String asnType, String profitLossId, String profitLossType, String profitLossQty) {
+        List<String> orderIdList =  new ArrayList<>();
+        Return result = new Return();
+        try {
+            for(int i = 0; i<excuteCount; i++){
+                String boxId = Long.toString(System.currentTimeMillis() + i);
+                BoxDetail boxDetail = new BoxDetail();
+                String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                boxDetail.setTaskId(UUID.randomUUID().toString());
+                boxDetail.setFrom(686);
+                boxDetail.setTo(6);
+                boxDetail.setOperatorName("swagger测试");
+                boxDetail.setBoxid(boxId);
+                boxDetail.setBarcode(boxId);
+                boxDetail.setStartSid(571110);
+                boxDetail.setToSid(Integer.parseInt(routeRule));
+                boxDetail.setOutsideno("VW" + boxId);
+
+                List<Boxware> qingdanlist = new ArrayList<>();
+                String [] goodsArr = goodNo.split(",");
+                for (int j =0; j< goodsArr.length; j++) {
+                    Boxware boxware = new Boxware();
+                    boxware.setId(boxId);
+                    boxware.setType(1);
+                    boxware.setBilv(1);
+                    boxware.setWid(goodsArr[j]);
+                    Example example = new Example(BsItembase.class);
+                    example.createCriteria().andEqualTo("goodsNo",goodsArr[j]);
+                    List<BsItembase> list  = goodMapper.selectByExample(example);
+                    if(!CollectionUtils.isEmpty(list)){
+                        boxware.setWname(list.get(0).getName());
+                    }
+                    boxware.setWnum(Integer.valueOf(goodNum));
+                    boxware.setBoxid(boxId);
+                    boxware.setOperatorId("swagger");
+                    boxware.setTimeState(date);
+                    boxware.setState(2);
+                    boxware.setRfid(0);
+                    boxware.setOldState(0);
+                    boxware.setNewState(0);
+                    boxware.setBarcode(boxId);
+                    qingdanlist.add(boxware);
+                }
+                boxDetail.setQingdanlist(qingdanlist);
+
+
+                result = XmlUtil.getStringResponse(bizType,XmlUtil.convertToXml(boxDetail));
+                if("1".equals(result.getResultCode())){
+                    orderIdList.add(boxId);
+                }
+            }
+        } catch (Exception e) {
+            log.error("内配入箱报文接口异常：",e);
             return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
         }
         if(CollectionUtils.isEmpty(orderIdList)){

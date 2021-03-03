@@ -309,6 +309,10 @@ public class OutServiceImpl implements OutService {
                 String id = Long.toString(System.currentTimeMillis() + i);
 
                 ReceiveOrder receiveOrder = new ReceiveOrder();
+                //渠道
+                if(!"0".equals(profitLossId)){
+                    receiveOrder.setProfitLossId(profitLossId);
+                }
                 receiveOrder.setTaskId(UUID.randomUUID().toString());
                 receiveOrder.setRfid(id);
                 receiveOrder.setFrom("6");

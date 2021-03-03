@@ -9,6 +9,8 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
 public class ReceiveOrder {
+    private String profitLossId;
+    private String channelType;
     private String taskId;
     private String rfid;
     private String from;

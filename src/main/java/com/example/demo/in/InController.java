@@ -64,7 +64,7 @@ public class InController {
                     .url(BizTypeEnum.CASE_INFO.getUrl())
                     .routeRule(routeRule)
                     .build();
-            return inService.asnDataImport(goodNo, goodNum, excuteCount, routeRule, bizType,asnType,profitLossId,profitLossType,profitLossQty);
+            return inService.downLoadNewReceivedNoAndCaseInfo(goodNo, goodNum, excuteCount, routeRule, bizType,asnType,profitLossId,profitLossType,profitLossQty);
         }
 
         if("内配入批次报文".equals(asnType)){
