@@ -115,7 +115,7 @@ public class OutServiceImpl implements OutService {
 
                     if(!"0".equals(profitLossId)){
                         Map<String, String> extTagsMap = new HashMap<>();
-                        extTagsMap.put("profitChannelId",profitLossId);
+                        extTagsMap.put("profitChannelId",profitLossId.split(",")[j]);
                         odOrderDetail.setExtTagsMap(extTagsMap);
                     }
                     odOrderDetailList.add(odOrderDetail);

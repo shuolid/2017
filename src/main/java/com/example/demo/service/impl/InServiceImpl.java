@@ -74,6 +74,12 @@ public class InServiceImpl implements InService {
                     parkAsnD.setGoodsNo(goodsArr[j]);
                     parkAsnD.setExpectedQty(new BigDecimal(goodNum.split(",")[j]).doubleValue());
                     parkAsnD.setSourceGoodsNo("swagger测试");
+                    Example example = new Example(BsItembase.class);
+                    example.createCriteria().andEqualTo("goodsNo",goodsArr[j]);
+                    List<BsItembase> list  = goodMapper.selectByExample(example);
+                    if(!CollectionUtils.isEmpty(list)){
+                        parkAsnD.setSourceGoodsNo(list.get(0).getName());
+                    }
                     parkAsnD.setBarCodeType("3");
                     parkAsnD.setSerialListFlag("0");
                     parkAsnD.setIncomplete("1");
@@ -85,7 +91,7 @@ public class InServiceImpl implements InService {
                     if(!"0".equals(profitLossId)){
                         List<SkuProfitLossInfo> skuProfitLossInfoList = new ArrayList<>();
                         SkuProfitLossInfo skuProfitLossInfo  =  new SkuProfitLossInfo();
-                        skuProfitLossInfo.setProfitLossId(profitLossId);
+                        skuProfitLossInfo.setProfitLossId(profitLossId.split(",")[j]);
                         skuProfitLossInfo.setQty(profitLossQty);
                         skuProfitLossInfoList.add(skuProfitLossInfo);
                         parkAsnD.setSkuProfitLossInfoList(skuProfitLossInfoList);
@@ -203,12 +209,12 @@ public class InServiceImpl implements InService {
                     sparePartsImportD.setSheetId(inboundNo);
                     sparePartsImportD.setLocNo("3");
                     sparePartsImportD.setPkCount(0);
-                    sparePartsImportD.setQty(10d);
+                    sparePartsImportD.setQty(new BigDecimal(goodNum.split(",")[j]).doubleValue());
                     sparePartsImportD.setSerialId("1");
                     sparePartsImportD.setSupplierNo("lsbjgdgc");
                     //渠道
                     if(!"0".equals(profitLossId)){
-                        sparePartsImportD.setChannelId(profitLossId);
+                        sparePartsImportD.setChannelId(profitLossId.split(",")[j]);
                     }
 
                     sparePartsImportDList.add(sparePartsImportD);
@@ -265,7 +271,7 @@ public class InServiceImpl implements InService {
                     if(!CollectionUtils.isEmpty(list)){
                         productRequest.setProductName(list.get(0).getName());
                     }
-                    productRequest.setProductNum(10);
+                    productRequest.setProductNum(new BigDecimal(goodNum.split(",")[j]).intValue());
                     productRequest.setProductPrice(39.9d);
 
                     //渠道
