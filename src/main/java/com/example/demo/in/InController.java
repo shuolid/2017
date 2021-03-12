@@ -21,7 +21,7 @@ public class InController {
     @PostMapping("/asnDataImport")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "routeRule", paramType = "query", allowableValues = "55", defaultValue = "55"),
-            @ApiImplicitParam(name = "asnType", paramType = "query", allowableValues = "采购单,采购ASN单,备件库入大库,客户退货单,内配入箱报文,内配入批次报文", defaultValue = "采购单"),
+            @ApiImplicitParam(name = "asnType", paramType = "query", allowableValues = "采购单,采购ASN单,备件库入大库,客户退货单,内配入报文", defaultValue = "采购单"),
             @ApiImplicitParam(name = "profitLossType", paramType = "query", allowableValues = "B单,C单", defaultValue = "C单")
     })
     @ApiOperation(value = "入库下单", notes = "多商品，多个，多次入库下单")
@@ -56,7 +56,7 @@ public class InController {
             return inService.issuedOrders(goodNo, goodNum, excuteCount, routeRule, bizType,asnType,profitLossId,profitLossType,profitLossQty);
         }
 
-        if("内配入箱报文".equals(asnType)){
+        if("内配入报文".equals(asnType)){
             BizType bizType = BizType.builder()
                     .bizType(BizTypeEnum.CASE_INFO.getBizType())
                     .uuid(BizTypeEnum.CASE_INFO.getUuid())
@@ -67,16 +67,16 @@ public class InController {
             return inService.downLoadNewReceivedNoAndCaseInfo(goodNo, goodNum, excuteCount, routeRule, bizType,asnType,profitLossId,profitLossType,profitLossQty);
         }
 
-        if("内配入批次报文".equals(asnType)){
-            BizType bizType = BizType.builder()
-                    .bizType(BizTypeEnum.TRANS_BILLS.getBizType())
-                    .uuid(BizTypeEnum.TRANS_BILLS.getUuid())
-                    .callCode(BizTypeEnum.TRANS_BILLS.getCallCode())
-                    .url(BizTypeEnum.TRANS_BILLS.getUrl())
-                    .routeRule(routeRule)
-                    .build();
-            return inService.asnDataImport(goodNo, goodNum, excuteCount, routeRule, bizType,asnType,profitLossId,profitLossType,profitLossQty);
-        }
+//        if("内配入批次报文".equals(asnType)){
+//            BizType bizType = BizType.builder()
+//                    .bizType(BizTypeEnum.TRANS_BILLS.getBizType())
+//                    .uuid(BizTypeEnum.TRANS_BILLS.getUuid())
+//                    .callCode(BizTypeEnum.TRANS_BILLS.getCallCode())
+//                    .url(BizTypeEnum.TRANS_BILLS.getUrl())
+//                    .routeRule(routeRule)
+//                    .build();
+//            return inService.asnDataImport(goodNo, goodNum, excuteCount, routeRule, bizType,asnType,profitLossId,profitLossType,profitLossQty);
+//        }
 
         BizType bizType = BizType.builder()
                 .bizType(BizTypeEnum.ASN_DATA_IMPORT.getBizType())

@@ -13,7 +13,7 @@ public enum BizTypeEnum {
     IMPORT_RECEIVING_TASK("wms_receiving_Itface_importReceivingTask", "uuid","360BUY.WMS3.WS.CALLCODE.100","http://merge.wms5.jd.test/inbound/services/receivingWSSoap"),
     ISSUED_ORDERS("wms_receiving_orderIdIssuedFromDmsService_issuedOrders", "uuid","360BUY.WMS3.WS.CALLCODE.100","http://merge.wms5.jd.test/inbound/services/receivingWSSoap"),
     CASE_INFO("wms_receiving_downLoad_downLoadNewReceivedNoAndCaseInfo", "uuid","360BUY.WMS3.WS.CALLCODE.100","http://merge.wms5.jd.test/inbound/services/receivingWSSoap"),
-    TRANS_BILLS("wms_receiving_wmsDownload_downLoadTransBillsFromWms3", "uuid","360BUY.WMS3.WS.CALLCODE.100","http://merge.wms5.jd.test/inbound/services/receScheduling");
+    TRANS_BILLS("wms_receiving_wmsDownload_downLoadTransBillsFromWms3", "uuid","360BUY.WMS3.WS.CALLCODE.100","http://merge.wms5.jd.test/inbound/services/receivingWSSoap");
 
 
     private String bizType;

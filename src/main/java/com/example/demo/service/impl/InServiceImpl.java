@@ -1,14 +1,14 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.BizType;
+import com.example.demo.apiModel.BizTypeEnum;
 import com.example.demo.apiModel.ResultModel;
 import com.example.demo.apiModel.Return;
 import com.example.demo.apiModel.asnDataImport.ParkAsnD;
 import com.example.demo.apiModel.asnDataImport.ParkAsnExpend;
 import com.example.demo.apiModel.asnDataImport.ParkAsnM;
 import com.example.demo.apiModel.asnDataImport.SkuProfitLossInfo;
-import com.example.demo.apiModel.caseInfo.BoxDetail;
-import com.example.demo.apiModel.caseInfo.Boxware;
+import com.example.demo.apiModel.caseInfo.*;
 import com.example.demo.apiModel.importReceivingTask.SparePartsImportD;
 import com.example.demo.apiModel.importReceivingTask.SparePartsImportM;
 import com.example.demo.apiModel.issuedOrders.ProductRequest;
@@ -300,6 +300,7 @@ public class InServiceImpl implements InService {
         List<String> orderIdList =  new ArrayList<>();
         Return result = new Return();
         try {
+            //内配入箱报文
             for(int i = 0; i<excuteCount; i++){
                 String boxId = Long.toString(System.currentTimeMillis() + i);
                 BoxDetail boxDetail = new BoxDetail();
@@ -347,8 +348,103 @@ public class InServiceImpl implements InService {
                     orderIdList.add(boxId);
                 }
             }
+
+            //内配入批次报文
+            for(int m = 0; m<orderIdList.size(); m++){
+                TransBillsFromWms3 transBillsFromWms3 = new TransBillsFromWms3();
+
+                String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                IbTransferDeliveryBill ibTransferDeliveryBill = new IbTransferDeliveryBill();
+                ibTransferDeliveryBill.setId(0);
+                ibTransferDeliveryBill.setDeliveryBillNo(orderIdList.get(m) + "swagger");
+                ibTransferDeliveryBill.setSource(1);
+                ibTransferDeliveryBill.setOrgNo("6");
+                ibTransferDeliveryBill.setDistributeNo("6");
+                ibTransferDeliveryBill.setWarehouseNo(routeRule);
+                ibTransferDeliveryBill.setFromOrgNo("6");
+                ibTransferDeliveryBill.setFromDistributeNo("6");
+                ibTransferDeliveryBill.setFromWarehouseNo("80");
+                ibTransferDeliveryBill.setDeliveryTime(date);
+                ibTransferDeliveryBill.setCaseQty(new BigDecimal("1"));
+                ibTransferDeliveryBill.setCarrierCode("001");
+                ibTransferDeliveryBill.setCarrierBillNo("2016110701");
+                ibTransferDeliveryBill.setCarrierName("中外运久凌储运有限公司上海分公司");
+
+                transBillsFromWms3.setIbTransferDeliveryBill(ibTransferDeliveryBill);
+
+                List<TransCaseInfoFromWms3> caseInfos = new ArrayList<>();
+                TransCaseInfoFromWms3 transCaseInfoFromWms3 = new TransCaseInfoFromWms3();
+                transCaseInfoFromWms3.setProfitLossId("111");
+                transCaseInfoFromWms3.setChannelType("B");
+                transCaseInfoFromWms3.setOrgNo("6");
+                transCaseInfoFromWms3.setDistributeNo("6");
+                transCaseInfoFromWms3.setWarehouseNo(routeRule);
+                transCaseInfoFromWms3.setInboundStatus(0);
+                transCaseInfoFromWms3.setTotalQty(10);
+                transCaseInfoFromWms3.setTotalWeight(0);
+                transCaseInfoFromWms3.setTotalVolume(0);
+                transCaseInfoFromWms3.setLabelQty(0);
+                transCaseInfoFromWms3.setPurchaseTransFlag(0);
+                transCaseInfoFromWms3.setCarrierNo("001");
+                transCaseInfoFromWms3.setCarrierName("中外运久凌储运有限公司上海分公司");
+                transCaseInfoFromWms3.setCaseType("masterBox");
+                transCaseInfoFromWms3.setTransType("G1");
+                transCaseInfoFromWms3.setExpectedWeight(0.24d);
+                transCaseInfoFromWms3.setCaseVolume(1287000d);
+                transCaseInfoFromWms3.setCaseNo(orderIdList.get(m));
+                transCaseInfoFromWms3.setCaseRealQty(1);
+
+                List<IbReceivingTaskD> ibReceivingTaskDs = new ArrayList<>();
+                String [] goodsArr = goodNo.split(",");
+                for (int n =0; n< goodsArr.length; n++) {
+                    IbReceivingTaskD ibReceivingTaskD = new IbReceivingTaskD();
+                    ibReceivingTaskD.setInboundNo(orderIdList.get(m));
+                    ibReceivingTaskD.setUuid(orderIdList.get(m));
+                    ibReceivingTaskD.setOwnerNo("1");
+                    ibReceivingTaskD.setOrgNo("6");
+                    ibReceivingTaskD.setDistributeNo("6");
+                    ibReceivingTaskD.setWarehouseNo(routeRule);
+                    ibReceivingTaskD.setInnerId(0);
+                    ibReceivingTaskD.setGoodsNo(goodsArr[n]);
+                    Example example = new Example(BsItembase.class);
+                    example.createCriteria().andEqualTo("goodsNo",goodsArr[n]);
+                    List<BsItembase> list  = goodMapper.selectByExample(example);
+                    if(!CollectionUtils.isEmpty(list)){
+                        ibReceivingTaskD.setGoodsName(list.get(0).getName());
+                    }
+                    ibReceivingTaskD.setPackingQty(0);
+                    ibReceivingTaskD.setPackingUnit("件");
+                    ibReceivingTaskD.setExpectedQty(new BigDecimal(goodNum.split(",")[n]).doubleValue());
+                    ibReceivingTaskD.setReceivedQty(0d);
+                    ibReceivingTaskD.setReturnLossQty(0d);
+                    ibReceivingTaskD.setLotNo("-1");
+                    ibReceivingTaskD.setSnFlag(1);
+                    ibReceivingTaskD.setIsBox(0);
+                    ibReceivingTaskD.setBoxRuleCode("3-each");
+                    ibReceivingTaskDs.add(ibReceivingTaskD);
+                }
+                transCaseInfoFromWms3.setIbReceivingTaskDs(ibReceivingTaskDs);
+                caseInfos.add(transCaseInfoFromWms3);
+                transBillsFromWms3.setCaseInfos(caseInfos);
+
+                List<TransGoodsFromWms3> transGoodsFromWms3s = new ArrayList<>();
+                TransGoodsFromWms3 transGoodsFromWms3 = new TransGoodsFromWms3();
+                transGoodsFromWms3.setGoodsNo("100000055000");
+                transGoodsFromWms3.setLotNo("-1");
+                transGoodsFromWms3s.add(transGoodsFromWms3);
+                transBillsFromWms3.setTransGoodsFromWms3s(transGoodsFromWms3s);
+
+                BizType b= BizType.builder()
+                        .bizType(BizTypeEnum.TRANS_BILLS.getBizType())
+                        .uuid(BizTypeEnum.TRANS_BILLS.getUuid())
+                        .callCode(BizTypeEnum.TRANS_BILLS.getCallCode())
+                        .url(BizTypeEnum.TRANS_BILLS.getUrl())
+                        .routeRule(routeRule)
+                        .build();
+                result = XmlUtil.getStringResponse(b,transBillsFromWms3);
+            }
         } catch (Exception e) {
-            log.error("内配入箱报文接口异常：",e);
+            log.error("内配入报文接口异常：",e);
             return ResultModel.builder().code(1).message(e.getMessage()).data(orderIdList).build();
         }
         if(CollectionUtils.isEmpty(orderIdList)){
